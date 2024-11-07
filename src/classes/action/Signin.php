@@ -1,5 +1,5 @@
 <?php
-
+namespace iutnc\NRV\action;
 
 use iutnc\NRV\action\Action;
 use iutnc\NRV\auth\AuthnProvider;

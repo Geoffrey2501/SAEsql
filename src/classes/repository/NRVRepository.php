@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace iutnc\NRV\repository;
 
+use iutnc\NRV\event\Spectacle;
+
 class NRVRepository
 {
     /**
@@ -44,17 +46,18 @@ class NRVRepository
      * @param string $file
      * @throws \Exception
      */
-    public function getSpectacle()
+    public static function getSpectacle()
     {
         //requete sql pour recuperer les spectacles et leur horaire
-        $stmt = $this->pdo->prepare("SELECT Spectacle.IdSpec, libelle, titrespec, video,horaire, nomstyle FROM spectacle inner join soireespectacle on spectacle.idspec=soireespectacle.idspec
+        $pdo = self::getInstance()->getPDO();
+        $stmt = $pdo->prepare("SELECT Spectacle.IdSpec, libelle, titrespec, video,horaire, nomstyle FROM spectacle inner join soireespectacle on spectacle.idspec=soireespectacle.idspec
                                             inner join Style on Spectacle.IdStyle=Style.idStyle;");
         $stmt->execute();
         $spectacles = [];
         while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
             $id = $row['IdSpec'];
             //requete sql pour recuperer les images des spectacles
-            $stmt2 = $this->pdo->prepare("SELECT chemin FROM spectacleimage inner join Image on spectacleimage.idimage=Image.idimage where idspec = :id");
+            $stmt2 = $pdo->prepare("SELECT chemin FROM spectacleimage inner join Image on spectacleimage.idimage=Image.idimage where idspec = :id");
             $stmt2->execute(['id' => $id]);
             $images = [];
             while ($row2 = $stmt2->fetch(\PDO::FETCH_ASSOC)) {
@@ -64,6 +67,23 @@ class NRVRepository
             $spectacles[] = new Spectacle($row['titrespec'], $row['libelle'], $row['video'], $row["horaire"], $images, []);
         }
         return $spectacles;
+    }
+    /**
+     * @param string $libelle
+     * @param string $titre
+     * @param string $video
+     * @param string $horaire
+     * @param int $style
+     */
+    public static function addSpectacle(string $libelle, string $titre, string $video, int $style)
+    {
+        $pdo = self::getInstance()->getPDO();
+        $stmt = $pdo->prepare("SELECT MAX(idSpec) AS max_id FROM spectacle");
+        $stmt->execute();
+        $id = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $id = (int)$id['max_id'] + 1;
+        $stmt = $pdo->prepare("INSERT INTO spectacle (idSpec, libelle, titrespec, video, idstyle) VALUES (:id, :libelle, :titre, :video, :style)");
+        $stmt->execute([':id' => $id, ':libelle' => $libelle, ':titre' => $titre, ':video' => $video, ':style' => $style]);
     }
     /**
      * @param string $file
@@ -90,5 +110,17 @@ class NRVRepository
     public function getPDO(): \PDO
     {
         return $this->pdo;
+    }
+
+    public static function getStyles()
+    {
+        $pdo = self::getInstance()->getPDO();
+        $stmt = $pdo->prepare("SELECT idStyle, nomstyle FROM Style");
+        $stmt->execute();
+        $styles = [];
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $styles[$row['idStyle']] = $row['nomstyle'];
+        }
+        return $styles;
     }
 }

@@ -1,9 +1,13 @@
 <?php
 
 namespace iutnc\NRV\dispatch;
+
+use AddUserAction;
+use iutnc\NRV\action\AddSpectacle;
 use iutnc\NRV\action\DefaultAction;
 use iutnc\NRV\action\DisplayListeSpectacleAction;
 use iutnc\NRV\repository\NRVRepository;
+use iutnc\NRV\action\Signin;
 
 
 class Dispatcher
@@ -12,32 +16,44 @@ class Dispatcher
      * @var string
      */
     private string $action;
+
     /**
      * Dispatcher constructor.
      */
     public function __construct()
     {
-        $this->action = $_GET['action'] ?? 'default';
+        $this->action = $_GET['action']??'default';
     }
+
     /**
      * @throws \Exception
      * gerer les actions
      */
     public function run(): void
     {
-        NRVRepository::getInstance()->setConfig(__DIR__ . '/../../../../config/NRV.db.init');
-        $html = '';
+        NRVRepository::setConfig(__DIR__ . '/../../../../config/NRV.db.init');
         switch ($this->action) {
-            case 'default':
-                $action = new DefaultAction();
+            case 'add-spectacle':
+                $action = new AddSpectacle();
+                break;
+            case 'signin':
+                $action = new Signin();
+                break;
+            case 'add-user':
+                $action = new AddUserAction();
                 break;
             case 'display-spectacle':
                 $action = new DisplayListeSpectacleAction();
+                break;
+
+            default:
+                $action = new DefaultAction();
                 break;
         }
         $html = $action->execute();
         $this->renderPage($html);
     }
+
     /**
      * @param string $html
      * page html génerer
@@ -108,8 +124,8 @@ class Dispatcher
                 <ul>
                     <li><a href="?action=default">Accueil</a></li>
                     <li><a href="?action=display-spectacle">Afficher spectacle</a></li>
-                    <li><a href="?action=">Vide</a></li>
-                    <li><a href="?action=">Vide</a></li>
+                    <li><a href="?action=signin">Connexion</a></li>
+                    <li><a href="?action=add-spectacle">Ajouter Spectacle</a></li>
                     <li><a href="?action=">Vide</a></li>
                     <li><a href="?action=">Vide</a></li>
                 </ul>
