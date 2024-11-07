@@ -1,6 +1,10 @@
 <?php
+
 namespace iutnc\NRV\dispatch;
+use iutnc\NRV\action\DefaultAction;
+use iutnc\NRV\action\DisplayListeSpectacleAction;
 use iutnc\NRV\repository\NRVRepository;
+
 
 class Dispatcher
 {
@@ -24,10 +28,15 @@ class Dispatcher
         NRVRepository::setConfig(__DIR__ . '/../../../../config/NRV.db.init');
         $html = '';
         switch ($this->action) {
-
+            case 'default':
+                $action = new DefaultAction();
+                break;
+            case 'display-spectacle':
+                $action = new DisplayListeSpectacleAction();
+                break;
         }
-        //$html = $action->execute();
-        //$this->renderPage($html);
+        $html = $action->execute();
+        $this->renderPage($html);
     }
     /**
      * @param string $html

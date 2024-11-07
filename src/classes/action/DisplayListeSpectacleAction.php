@@ -1,5 +1,8 @@
 <?php
 
+namespace iutnc\NRV\action;
+use iutnc\NRV\repository\NRVRepository;
+
 /**
  * Class DisplaySpectacle
  */
