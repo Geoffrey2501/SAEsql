@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace iutnc\NRV\repository;
 
+use iutnc\NRV\event\Soiree;
 use iutnc\NRV\event\Spectacle;
 
 class NRVRepository
@@ -68,6 +69,48 @@ class NRVRepository
         }
         return $spectacles;
     }
+
+    public static function getSpectacleById($idSpectacle) {
+        $pdo = self::getInstance()->getPDO();
+        //requete sql pour recuperer les spectacles et leur horaire
+        $stmt = $pdo->prepare("SELECT Spectacle.IdSpec, libelle, titrespec, video,horaire, nomstyle FROM spectacle
+                                            INNER JOIN soireespectacle ON spectacle.idspec=soireespectacle.idspec
+                                            INNER JOIN Style ON Spectacle.IdStyle=Style.idStyle
+                                            WHERE IdSpec = :id");
+        $stmt->execute(['id' => $idSpectacle]);
+        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        $stmt2 = $pdo->prepare("SELECT chemin FROM spectacleimage inner join Image on spectacleimage.idimage=Image.idimage where idspec = :id");
+        $stmt2->bindParam(':id', $idSpectacle);
+        $stmt2->execute();
+        $images = [];
+
+        while ($row2 = $stmt2->fetch(\PDO::FETCH_ASSOC)) {
+            $images[] = $row2['chemin'];
+        }
+        return new Spectacle($row['titrespec'], $row['libelle'], $row['video'], $row["horaire"], $images, []);
+    }
+
+    public static function getSoiree($idSoiree) {
+        $pdo = self::getInstance()->getPDO();
+
+        $stmt = $pdo->prepare("SELECT TitreSoiree, NomTheme, Date, Horaire, NomLieu FROM soiree
+                                        INNER JOIN theme ON theme.IdTheme=soiree.IdTheme
+                                        INNER JOIN lieu ON lieu.IdLieu=soiree.IdLieu
+                                        WHERE IdSoiree = :id");
+        $stmt->execute(['id' => $idSoiree]);
+        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+        //requete sql pour recuperer les spectacles de la soiree
+        $stmt2 = $pdo->prepare("SELECT IdSpec FROM soireespectacle WHERE IdSoiree = :id");
+        $stmt2->execute(['id' => $idSoiree]);
+        $spectacles = [];
+        while ($row2 = $stmt2->fetch(\PDO::FETCH_ASSOC)) {
+            $spectacles[] = self::getSpectacleById($row2['IdSpec']);
+        }
+        return new Soiree($row['TitreSoiree'], $row['NomTheme'], $row['Date'], $row['Horaire'], $row['NomLieu'], $spectacles);
+    }
+
+
     /**
      * @param string $file
      * @throws \Exception
