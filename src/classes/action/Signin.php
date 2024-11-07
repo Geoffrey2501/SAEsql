@@ -1,6 +1,7 @@
 <?php
 
 
+use iutnc\NRV\action\Action;
 use iutnc\NRV\auth\AuthnProvider;
 use iutnc\NRV\exception\AuthnException;
 use \iutnc\NRV\repository\NRVRepository;
