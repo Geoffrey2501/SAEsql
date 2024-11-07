@@ -1,5 +1,7 @@
 <?php
 
+namespace iutnc\NRV\action;
+
 /**
  * Class DefaultAction
  */
