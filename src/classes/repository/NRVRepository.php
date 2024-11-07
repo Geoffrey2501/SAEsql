@@ -83,6 +83,27 @@ class NRVRepository
             'pass' => $conf['pass']
         ];
     }
+    public static function addSpectacle(string $libelle, string $titre, string $video, int $style)
+    {
+        $pdo = self::getInstance()->getPDO();
+        $stmt = $pdo->prepare("SELECT MAX(idSpec) AS max_id FROM spectacle");
+        $stmt->execute();
+        $id = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $id = (int)$id['max_id'] + 1;
+        $stmt = $pdo->prepare("INSERT INTO spectacle (idSpec, libelle, titrespec, video, idstyle) VALUES (:id, :libelle, :titre, :video, :style)");
+        $stmt->execute([':id' => $id, ':libelle' => $libelle, ':titre' => $titre, ':video' => $video, ':style' => $style]);
+    }
+    public static function getStyles()
+    {
+        $pdo = self::getInstance()->getPDO();
+        $stmt = $pdo->prepare("SELECT idStyle, nomstyle FROM Style");
+        $stmt->execute();
+        $styles = [];
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $styles[$row['idStyle']] = $row['nomstyle'];
+        }
+        return $styles;
+    }
 
 
     /**
