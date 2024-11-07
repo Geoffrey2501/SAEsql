@@ -48,15 +48,16 @@ class NRVRepository
      */
     public static function getSpectacle()
     {
+        $pdo = self::getInstance()->getPDO();
         //requete sql pour recuperer les spectacles et leur horaire
-        $stmt = pdo->prepare("SELECT Spectacle.IdSpec, libelle, titrespec, video,horaire, nomstyle FROM spectacle inner join soireespectacle on spectacle.idspec=soireespectacle.idspec
+        $stmt = $pdo->prepare("SELECT Spectacle.IdSpec, libelle, titrespec, video,horaire, nomstyle FROM spectacle inner join soireespectacle on spectacle.idspec=soireespectacle.idspec
                                             inner join Style on Spectacle.IdStyle=Style.idStyle;");
         $stmt->execute();
         $spectacles = [];
         while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
             $id = $row['IdSpec'];
             //requete sql pour recuperer les images des spectacles
-            $stmt2 = pdo->prepare("SELECT chemin FROM spectacleimage inner join Image on spectacleimage.idimage=Image.idimage where idspec = :id");
+            $stmt2 = $pdo->prepare("SELECT chemin FROM spectacleimage inner join Image on spectacleimage.idimage=Image.idimage where idspec = :id");
             $stmt2->execute(['id' => $id]);
             $images = [];
             while ($row2 = $stmt2->fetch(\PDO::FETCH_ASSOC)) {
@@ -83,6 +84,13 @@ class NRVRepository
             'pass' => $conf['pass']
         ];
     }
+
+    /**
+     * @param string $libelle
+     * @param string $titre
+     * @param string $video
+     * @param int $style
+     */
     public static function addSpectacle(string $libelle, string $titre, string $video, int $style)
     {
         $pdo = self::getInstance()->getPDO();
@@ -93,6 +101,11 @@ class NRVRepository
         $stmt = $pdo->prepare("INSERT INTO spectacle (idSpec, libelle, titrespec, video, idstyle) VALUES (:id, :libelle, :titre, :video, :style)");
         $stmt->execute([':id' => $id, ':libelle' => $libelle, ':titre' => $titre, ':video' => $video, ':style' => $style]);
     }
+
+    /**
+     * @return array
+     * retrouner les styles de musique
+     */
     public static function getStyles()
     {
         $pdo = self::getInstance()->getPDO();
