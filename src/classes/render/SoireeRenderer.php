@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace iutnc\NRV\render;
 
+use iutnc\NRV\event\Soiree;
+
 class SoireeRenderer implements Renderer {
     protected Soiree $soiree;
 
