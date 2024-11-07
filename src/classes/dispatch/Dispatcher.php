@@ -1,5 +1,5 @@
 <?php
-
+namespace iutnc\NRV\dispatch;
 
 class Dispatcher
 {
