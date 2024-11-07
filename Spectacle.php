@@ -10,7 +10,7 @@ class Spectacle
      */
     private string $titre;
     private string $description;
-    private string $urlVideo;
+    private ?string $urlVideo;
     private string $horairePrevisionnel;
 
     /**
@@ -28,7 +28,7 @@ class Spectacle
      * @param array $images
      * @param array $artistes
      */
-    public function __construct(string $titre, string $description, string $urlVideo, string $horairePrevisionnel, array $images, array $artistes)
+    public function __construct(string $titre, string $description, ?string $urlVideo, string $horairePrevisionnel, array $images, array $artistes)
     {
         $this->titre = $titre;
         $this->description = $description;
