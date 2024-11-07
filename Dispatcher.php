@@ -3,44 +3,36 @@
 
 class Dispatcher
 {
+    /**
+     * @var string
+     */
     private string $action;
-
+    /**
+     * Dispatcher constructor.
+     */
     public function __construct()
     {
         $this->action = $_GET['action'] ?? 'default';
     }
-
+    /**
+     * @throws \Exception
+     * gerer les actions
+     */
     public function run(): void
     {
-        DeefyRepository::setConfig(__DIR__ . '/../../../../config/deefy.db.ini');
+        NRVRepository::setConfig(__DIR__ . '/../config/NRV.db.init');
         $html = '';
         switch ($this->action) {
-            case 'playlist':
-                $action = new DisplayPlaylistAction();
-                break;
-            case 'add-user':
-                $action = new AddUserAction();
-                break;
-            case 'add-playlist':
-                $action = new AddPlaylistAction();
-                break;
-            case 'add-track':
-                $action = new AddPodcastTrackAction();
-                break;
-            case 'signin':
-                $action = new Signin();
-                break;
-                case 'display-playlist':
-                $action = new DisplayPlaylist();
-                break;
-            default:
-                $action = new DefaultAction();
-                break;
-        }
-        $html = $action->execute();
-        $this->renderPage($html);
-    }
 
+        }
+        //$html = $action->execute();
+        //$this->renderPage($html);
+    }
+    /**
+     * @param string $html
+     * page html génerer
+     * avec dans $html qui est le resultat
+     */
     private function renderPage(string $html): void
     {
         echo <<<HTML
