@@ -25,7 +25,7 @@ class Dispatcher
      */
     public function run(): void
     {
-        NRVRepository::setConfig(__DIR__ . '/../../../../config/NRV.db.init');
+        NRVRepository::getInstance()->setConfig(__DIR__ . '/../../../../config/NRV.db.init');
         $html = '';
         switch ($this->action) {
             case 'default':
@@ -107,11 +107,11 @@ class Dispatcher
             <nav>
                 <ul>
                     <li><a href="?action=default">Accueil</a></li>
-                    <li><a href="?action=signin">Se connecter</a></li>
-                    <li><a href="?action=add-playlist">Créer une playlist</a></li>
-                    <li><a href="?action=playlist">Mes playlists</a></li>
-                    <li><a href="?action=display-playlist">Afficher la playlist courante</a></li>
-                    <li><a href="?action=add-user">Inscrivez-vous</a></li>
+                    <li><a href="?action=display-spectacle">Afficher spectacle</a></li>
+                    <li><a href="?action=">Vide</a></li>
+                    <li><a href="?action=">Vide</a></li>
+                    <li><a href="?action=">Vide</a></li>
+                    <li><a href="?action=">Vide</a></li>
                 </ul>
             </nav>
             $html
