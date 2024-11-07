@@ -1,0 +1,9 @@
+{
+    "name": "thomas/sa-esql",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "iutnc\\NRV\\": "./src/classes/"
+        }
+    }
+}

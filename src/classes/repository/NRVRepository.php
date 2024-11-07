@@ -2,11 +2,7 @@
 declare(strict_types=1);
 
 
-use iutnc\deefy\audio\lists\AudioList;
-use iutnc\deefy\audio\lists\Playlist;
-use iutnc\deefy\audio\tracks\AlbumTrack;
-use iutnc\deefy\audio\tracks\AudioTrack;
-use iutnc\deefy\audio\tracks\PodcastTrack;
+namespace iutnc\NRV\repository;
 
 class NRVRepository
 {

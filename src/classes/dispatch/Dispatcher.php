@@ -1,5 +1,6 @@
 <?php
 namespace iutnc\NRV\dispatch;
+use iutnc\NRV\repository\NRVRepository;
 
 class Dispatcher
 {
