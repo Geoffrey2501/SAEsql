@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace iutnc\NRV\repository;
 
+use iutnc\NRV\event\Spectacle;
+
 class NRVRepository
 {
     /**
@@ -44,17 +46,17 @@ class NRVRepository
      * @param string $file
      * @throws \Exception
      */
-    public function getSpectacle()
+    public static function getSpectacle()
     {
         //requete sql pour recuperer les spectacles et leur horaire
-        $stmt = $this->pdo->prepare("SELECT Spectacle.IdSpec, libelle, titrespec, video,horaire, nomstyle FROM spectacle inner join soireespectacle on spectacle.idspec=soireespectacle.idspec
+        $stmt = pdo->prepare("SELECT Spectacle.IdSpec, libelle, titrespec, video,horaire, nomstyle FROM spectacle inner join soireespectacle on spectacle.idspec=soireespectacle.idspec
                                             inner join Style on Spectacle.IdStyle=Style.idStyle;");
         $stmt->execute();
         $spectacles = [];
         while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
             $id = $row['IdSpec'];
             //requete sql pour recuperer les images des spectacles
-            $stmt2 = $this->pdo->prepare("SELECT chemin FROM spectacleimage inner join Image on spectacleimage.idimage=Image.idimage where idspec = :id");
+            $stmt2 = pdo->prepare("SELECT chemin FROM spectacleimage inner join Image on spectacleimage.idimage=Image.idimage where idspec = :id");
             $stmt2->execute(['id' => $id]);
             $images = [];
             while ($row2 = $stmt2->fetch(\PDO::FETCH_ASSOC)) {
