@@ -1,6 +1,8 @@
 {
     "name": "thomas/sa-esql",
-    "require": {},
+    "require": {
+      "ext-pdo": "*"
+    },
     "autoload": {
         "psr-4": {
             "iutnc\\NRV\\": "./src/classes/"

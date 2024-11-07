@@ -1,8 +1,6 @@
 <?php
 
 
-
-
 require_once "vendor/autoload.php";
 
 use iutnc\NRV\dispatch\Dispatcher;
