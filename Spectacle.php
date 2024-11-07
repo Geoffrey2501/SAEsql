@@ -12,13 +12,7 @@ class Spectacle
     private string $description;
     private ?string $urlVideo;
     private string $horairePrevisionnel;
-    private string $lieuSpectacle;
-    private string $adresseSpectacle;
 
-    /**
-     * @var int
-     */
-    private int $nombrePlaces;
 
     /**
      * @var array
@@ -32,23 +26,17 @@ class Spectacle
      * @param string $description
      * @param string|null $urlVideo
      * @param string $horairePrevisionnel
-     * @param string $lieuSpectacle
-     * @param string $adresseSpectacle
-     * @param int $nombrePlaces
      * @param array $images
      * @param array $artistes
      */
     public function __construct(string $titre, string $description, ?string $urlVideo,
-                                string $horairePrevisionnel,string $lieuSpectacle, string $adresseSpectacle, int $nombrePlaces,
+                                string $horairePrevisionnel,
                                 array $images, array $artistes)
     {
         $this->titre = $titre;
         $this->description = $description;
         $this->urlVideo = $urlVideo;
         $this->horairePrevisionnel = $horairePrevisionnel;
-        $this->lieuSpectacle = $lieuSpectacle;
-        $this->adresseSpectacle = $adresseSpectacle;
-        $this->nombrePlaces = $nombrePlaces;
         $this->images = $images;
         $this->artistes = $artistes;
     }
