@@ -31,7 +31,7 @@ class Dispatcher
      */
     public function run(): void
     {
-        NRVRepository::setConfig(__DIR__ . '/../../../../config/NRV.db.init');
+        NRVRepository::setConfig(__DIR__ . '/../../../../config/NRV.db.ini');
         switch ($this->action) {
             case 'add-spectacle':
                 $action = new AddSpectacle();
@@ -44,6 +44,9 @@ class Dispatcher
                 break;
             case 'display-spectacle':
                 $action = new DisplayListeSpectacleAction();
+                break;
+            case 'display-soiree':
+                $action = new DisplaySoireeAction();
                 break;
 
             default:
@@ -126,7 +129,7 @@ class Dispatcher
                     <li><a href="?action=display-spectacle">Afficher spectacle</a></li>
                     <li><a href="?action=signin">Connexion</a></li>
                     <li><a href="?action=add-spectacle">Ajouter Spectacle</a></li>
-                    <li><a href="?action=">Vide</a></li>
+                    <li><a href="?action=display-soiree">Afficher soiree</a></li>
                     <li><a href="?action=">Vide</a></li>
                 </ul>
             </nav>
