@@ -35,7 +35,6 @@ class NRVRepository
     public static function getInstance()
     {
         if (is_null(self::$instance)) {
-            self::$instance = new DeefyRepository(self::$config);
             self::$instance = new NRVRepository(self::$config);
         }
         return self::$instance;

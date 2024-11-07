@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace iutnc\deefy\render;
+namespace iutnc\NRV\render;
 
 interface Renderer {
     const COMPACT = 1;

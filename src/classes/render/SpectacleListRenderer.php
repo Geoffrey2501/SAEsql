@@ -1,7 +1,9 @@
 <?php
 declare(strict_types=1);
 
-use Spectacle;
+namespace iutnc\NRV\render;
+use iutnc\NRV\event\Spectacle;
+
 
 
 class SpectacleListRenderer implements Renderer {

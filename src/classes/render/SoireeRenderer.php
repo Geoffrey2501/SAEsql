@@ -1,8 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use SpectacleListRenderer;
-use Soiree;
+namespace iutnc\NRV\render;
 
 class SoireeRenderer implements Renderer {
     protected Soiree $soiree;

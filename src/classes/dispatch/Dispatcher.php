@@ -21,7 +21,7 @@ class Dispatcher
      */
     public function run(): void
     {
-        NRVRepository::setConfig(__DIR__ . '/../config/NRV.db.init');
+        NRVRepository::setConfig(__DIR__ . '/../../../../config/NRV.db.init');
         $html = '';
         switch ($this->action) {
 
