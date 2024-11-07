@@ -1,19 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace iutnc\NRV\repository;
 
-use iutnc\NRV\event\Lieu;
-use iutnc\NRV\event\Spectacle;
-use iutnc\NRV\event\Soiree;
-
-
-
-
-
-/**
- * Class NRVRepository
- */
+use iutnc\deefy\audio\lists\AudioList;
+use iutnc\deefy\audio\lists\Playlist;
+use iutnc\deefy\audio\tracks\AlbumTrack;
+use iutnc\deefy\audio\tracks\AudioTrack;
+use iutnc\deefy\audio\tracks\PodcastTrack;
 
 class NRVRepository
 {

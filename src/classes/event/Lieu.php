@@ -1,18 +1,5 @@
 <?php
 
-namespace iutnc\NRV\event;
-
-
-
-
-
-
-
-
-
-
-
-
 
 /**
  * Class Lieu
