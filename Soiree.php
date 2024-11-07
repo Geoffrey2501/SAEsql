@@ -39,7 +39,7 @@ class Soiree
 
     /**
      * magic get
-     * @return string
+     * @return mixed
      */
     public function __get($name)
     {
