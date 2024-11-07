@@ -30,8 +30,11 @@ class Spectacle
     /**
      * @param string $titre
      * @param string $description
-     * @param string $urlVideo
+     * @param string|null $urlVideo
      * @param string $horairePrevisionnel
+     * @param string $lieuSpectacle
+     * @param string $adresseSpectacle
+     * @param int $nombrePlaces
      * @param array $images
      * @param array $artistes
      */
