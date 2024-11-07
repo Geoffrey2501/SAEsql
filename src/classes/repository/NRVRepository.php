@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace iutnc\NRV\repository;
 
+use iutnc\NRV\event\Soiree;
+use iutnc\NRV\event\Spectacle;
+
 class NRVRepository
 {
     /**
@@ -32,7 +35,7 @@ class NRVRepository
     /**
      * @return NRVRepository
      */
-    public static function getInstance()
+    public static function getInstance(): ?NRVRepository
     {
         if (is_null(self::$instance)) {
             self::$instance = new NRVRepository(self::$config);
@@ -44,10 +47,10 @@ class NRVRepository
      * @param string $file
      * @throws \Exception
      */
-    public function getSpectacle()
+    public function getSpectacle(): array
     {
         //requete sql pour recuperer les spectacles et leur horaire
-        $stmt = $this->pdo->prepare("SELECT Spectacle.IdSpec, libelle, titrespec, video,horaire, nomstyle FROM spectacle inner join soireespectacle on spectacle.idspec=soireespectacle.idspec
+        $stmt = $this->pdo->prepare("SELECT Spectacle.IdSpec, libelle, titrespec, video, horaire, nomstyle FROM spectacle inner join soireespectacle on spectacle.idspec=soireespectacle.idspec
                                             inner join Style on Spectacle.IdStyle=Style.idStyle;");
         $stmt->execute();
         $spectacles = [];
@@ -61,7 +64,7 @@ class NRVRepository
                 $images[] = $row2['chemin'];
             }
             //ajout du spectacle
-            $spectacles[] = new Spectacle($row['titrespec'], $row['libelle'], $row['video'], $row["horaire"], $images, []);
+            $spectacles[] = new Spectacle($row['titrespec'], $row['libelle'], $row['video'], $row['horaire'], $images, []);
         }
         return $spectacles;
     }
@@ -91,4 +94,5 @@ class NRVRepository
     {
         return $this->pdo;
     }
+
 }
