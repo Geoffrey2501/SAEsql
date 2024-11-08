@@ -31,7 +31,7 @@ class Dispatcher
      */
     public function run(): void
     {
-        NRVRepository::setConfig(__DIR__ . '/../../../../config/NRV.db.init');
+        NRVRepository::setConfig(__DIR__ . '/../../../config/NRV.db.ini');
         switch ($this->action) {
             case 'add-spectacle':
                 $action = new AddSpectacle();

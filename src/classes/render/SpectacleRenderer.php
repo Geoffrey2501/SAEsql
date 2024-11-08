@@ -6,7 +6,7 @@ use iutnc\NRV\event\Spectacle;
 
 
 
-class SpectacleListRenderer implements Renderer {
+class SpectacleRenderer implements Renderer {
 
     protected array $spectacles;
 
@@ -58,7 +58,3 @@ class SpectacleListRenderer implements Renderer {
         return $html;
     }
 }
-
-
-
-
