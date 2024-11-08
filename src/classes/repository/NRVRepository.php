@@ -260,7 +260,7 @@ class NRVRepository
     public static function getSoiree($idSoiree) {
         $pdo = self::getInstance()->getPDO();
 
-        $stmt = $pdo->prepare("SELECT TitreSoiree, NomTheme, Date, Horaire, NomLieu FROM soiree
+        $stmt = $pdo->prepare("SELECT TitreSoiree, NomTheme, Date, Horaire, NomLieu, Description FROM soiree
                                         INNER JOIN theme ON theme.IdTheme=soiree.IdTheme
                                         INNER JOIN lieu ON lieu.IdLieu=soiree.IdLieu
                                         WHERE IdSoiree = :id");
@@ -273,7 +273,7 @@ class NRVRepository
         while ($row2 = $stmt2->fetch(\PDO::FETCH_ASSOC)) {
             $spectacles[] = self::getSpectacleById($row2['IdSpec']);
         }
-        return new Soiree($row['TitreSoiree'], $row['NomTheme'], $row['Date'], $row['Horaire'], $row['NomLieu'], $spectacles);
+        return new Soiree($row['TitreSoiree'], $row['NomTheme'], $row['Date'], $row['NomLieu'], $spectacles, $row['Horaire'], $row['Description']);
 
     }
 }
