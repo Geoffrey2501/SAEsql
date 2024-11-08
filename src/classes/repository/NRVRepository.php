@@ -174,6 +174,46 @@ class NRVRepository
     }
 
 
+    /**
+     * @param int $styleId
+     * @return array
+     */
+    public static function filtreStyle(int $styleId): array {
+        $pdo = self::getInstance()->getPDO();
+
+        // Requête pour récupérer les spectacles filtrés par style
+        $stmt = $pdo->prepare("
+        SELECT IdSpec, libelle, titrespec, video
+        FROM spectacle
+        WHERE IdStyle = :styleId");
+
+        $stmt->execute([':styleId' => $styleId]);
+        $spectacles = [];
+
+        // Récupération des spectacles
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $idSpec = $row['IdSpec'];
+
+            // Deuxième requête pour récupérer les images du spectacle
+            $stmt2 = $pdo->prepare("SELECT chemin FROM spectacleimage SI
+                                 INNER JOIN image I ON SI.idimage = I.idimage
+                                 WHERE SI.idspec = :idSpec");
+            $stmt2->execute([':idSpec' => $idSpec]);
+
+            $images = [];
+            while ($row2 = $stmt2->fetch(\PDO::FETCH_ASSOC)) {
+                $images[] = $row2['chemin'];
+            }
+
+            // Création d'un objet Spectacle avec les données récupérées
+            $spectacles[] = new Spectacle($row['titrespec'], $row['libelle'], $row['video'], null, $images, []);
+        }
+
+        return $spectacles; // Retourner les résultats
+    }
+
+
+
 
     public static function getDates()
     {
