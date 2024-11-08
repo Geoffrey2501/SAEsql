@@ -40,7 +40,7 @@ class Soiree
      * @param array $spectacles
      */
     public function __construct(string $nomSoiree, string $themeSoiree, string $dateSoiree, string $heureSoiree,
-                                string $lieuSoiree, string $lieuSpectacle, string $adresseSpectacle, int $nombrePlaces, array $spectacles)
+                                string $lieuSoiree, array $spectacles) //string $lieuSpectacle, string $adresseSpectacle, int $nombrePlaces
     {
         $this->nomSoiree = $nomSoiree;
         $this->themeSoiree = $themeSoiree;
