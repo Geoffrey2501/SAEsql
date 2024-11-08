@@ -67,7 +67,7 @@ class NRVRepository
             }
             $spec = new Spectacle($row['titrespec'], $row['libelle'], $row['video'], $row["horaire"], $images, [], $row['date']);
             //ajout du spectacle
-            $spectacles[$spec] = $row['date'];
+            $spectacles[] = $spec;
         }
         return $spectacles;
     }
