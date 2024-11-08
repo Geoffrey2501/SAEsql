@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace iutnc\NRV\repository;
 
+use iutnc\NRV\event\Soiree;
 use iutnc\NRV\event\Spectacle;
 
 class NRVRepository
@@ -120,11 +121,159 @@ class NRVRepository
 
 
     /**
+     * @param String $d
+     * @return array
+     * filtrer les spectacles en fonction de la date
+     */
+    public static function filtreDate(String $d):array{
+        $pdo = self::getInstance()->getPDO();
+        $stmt = $pdo->prepare("SELECT Spectacle.IdSpec as idspectacle, libelle, titrespec, video,horaire, nomstyle 
+                                            FROM spectacle inner join soireespectacle on spectacle.idspec=soireespectacle.idspec
+                                            inner join Style on Spectacle.IdStyle=Style.idStyle
+                                            inner join soiree on soireespectacle.idsoiree=soiree.idsoiree
+                                            where soiree.date=:d;");
+        $stmt->execute([':d'=>$d]);
+        $spectacles = [];
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $id = $row['idspectacle'];
+            $stmt2 = $pdo->prepare("SELECT chemin FROM spectacleimage inner join Image on spectacleimage.idimage=Image.idimage where idspec = :id");
+            $stmt2->execute(['id' => $id]);
+            $images = [];
+            while ($row2 = $stmt2->fetch(\PDO::FETCH_ASSOC)) {
+                $images[] = $row2['chemin'];
+            }
+            $spectacles[(int)$row['idspectacle']] = new Spectacle($row['titrespec'], $row['libelle'], $row['video'], $row["horaire"], $images, []);
+        }
+        return $spectacles;
+    }
+    /**
+     * @param Int $id
+     * @return array
+     * filtrer les spectacles en fonction du lieu
+     */
+    public static function filtreLieux(Int $id):array{
+        $pdo = self::getInstance()->getPDO();
+        $stmt = $pdo->prepare("SELECT spectacle.idspec as idspectacle, libelle, titrespec, video,horaire, nomstyle 
+                                            FROM spectacle inner join soireespectacle on spectacle.idspec=soireespectacle.idspec
+                                            inner join Style on Spectacle.IdStyle=Style.idStyle
+                                            inner join soiree on soireespectacle.idsoiree=soiree.idsoiree
+                                            where idlieu = :id ");
+        $stmt->execute([':id'=>$id]);
+
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $id = $row['idspectacle']."boucle";
+            $stmt2 = $pdo->prepare("SELECT chemin FROM spectacleimage inner join Image on spectacleimage.idimage=Image.idimage where idspec = :id");
+            $stmt2->execute(['id' => $id]);
+            $images = [];
+            while ($row2 = $stmt2->fetch(\PDO::FETCH_ASSOC)) {
+                $images[] = $row2['chemin'];
+            }
+            $spectacles[(int)$row['idspectacle']] = new Spectacle($row['titrespec'], $row['libelle'], $row['video'], $row["horaire"], $images, []);
+        }
+        return $spectacles;
+    }
+
+
+
+    public static function getDates()
+    {
+        $pdo = self::getInstance()->getPDO();
+        $stmt = $pdo->prepare("SELECT date FROM soiree");
+        $stmt->execute();
+        $dates = [];
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $dates[] = $row['date'];
+        }
+        return $dates;
+    }
+
+    public function getLieux()
+    {
+        $pdo = self::getInstance()->getPDO();
+        $stmt = $pdo->prepare("SELECT idlieu, nomlieu FROM lieu");
+        $stmt->execute();
+        $lieux = [];
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $lieux[$row['idlieu']] = $row['nomlieu'];
+        }
+        return $lieux;
+    }
+
+    public function getThemes(){
+        $pdo = self::getInstance()->getPDO();
+        $stmt = $pdo->prepare("SELECT idtheme, nomtheme FROM theme");
+        $stmt->execute();
+        $themes = [];
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $themes[$row['idtheme']] = $row['nomtheme'];
+        }
+        return $themes;
+    }
+
+
+    /**
      * @return \PDO
      */
 
     public function getPDO(): \PDO
     {
         return $this->pdo;
+    }
+
+
+    public function addSoiree(Soiree $soiree):bool
+    {
+       $stmt = $this->pdo->prepare("INSERT INTO soiree (titresoiree, idtheme, date, idlieu, heuresoiree, description) VALUES (:nom, :theme, :date, :lieu, :heure, :description)");
+        try {
+            $stmt->execute([':nom' => $soiree->nomSoiree, ':theme' => $soiree->themeSoiree, ':date' => $soiree->dateSoiree, ':lieu' => $soiree->lieuSoiree, ':heure' => $soiree->heureSoiree, ':description' => $soiree->description]);
+            $res = true;
+        }catch (\Exception $e){
+            $res = false;
+        }
+        return $res;
+    }
+
+
+
+
+    public static function getSpectacleById($idSpectacle) {
+        $pdo = self::getInstance()->getPDO();
+        //requete sql pour recuperer les spectacles et leur horaire
+        $stmt = $pdo->prepare("SELECT Spectacle.IdSpec, libelle, titrespec, video,horaire, nomstyle FROM spectacle
+                                            INNER JOIN soireespectacle ON spectacle.idspec=soireespectacle.idspec
+                                            INNER JOIN Style ON Spectacle.IdStyle=Style.idStyle
+                                            WHERE IdSpec = :id");
+        $stmt->execute(['id' => $idSpectacle]);
+        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        $stmt2 = $pdo->prepare("SELECT chemin FROM spectacleimage inner join Image on spectacleimage.idimage=Image.idimage where idspec = :id");
+        $stmt2->bindParam(':id', $idSpectacle);
+        $stmt2->execute();
+        $images = [];
+
+        while ($row2 = $stmt2->fetch(\PDO::FETCH_ASSOC)) {
+            $images[] = $row2['chemin'];
+        }
+        return new Spectacle($row['titrespec'], $row['libelle'], $row['video'], $row["horaire"], $images, []);
+    }
+
+    public static function getSoiree($idSoiree) {
+        $pdo = self::getInstance()->getPDO();
+
+        $stmt = $pdo->prepare("SELECT TitreSoiree, NomTheme, Date, Horaire, NomLieu, Description FROM soiree
+                                        INNER JOIN theme ON theme.IdTheme=soiree.IdTheme
+                                        INNER JOIN lieu ON lieu.IdLieu=soiree.IdLieu
+                                        WHERE IdSoiree = :id");
+        $stmt->execute(['id' => $idSoiree]);
+        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+        //requete sql pour recuperer les spectacles de la soiree
+        $stmt2 = $pdo->prepare("SELECT IdSpec FROM soireespectacle WHERE IdSoiree = :id");
+        $stmt2->execute(['id' => $idSoiree]);
+        $spectacles = [];
+        while ($row2 = $stmt2->fetch(\PDO::FETCH_ASSOC)) {
+            $spectacles[] = self::getSpectacleById($row2['IdSpec']);
+        }
+        return new Soiree($row['TitreSoiree'], $row['NomTheme'], $row['Date'], $row['NomLieu'], $spectacles, $row['Horaire'], $row['Description']);
+
     }
 }

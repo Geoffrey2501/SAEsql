@@ -1,7 +1,7 @@
 {
     "name": "thomas/sa-esql",
     "require": {
-      "ext-pdo": "*"
+      "ext-pdo": "*",
     },
     "autoload": {
         "psr-4": {

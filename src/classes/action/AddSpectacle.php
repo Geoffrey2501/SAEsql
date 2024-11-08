@@ -6,6 +6,12 @@ use iutnc\NRV\repository\NRVRepository;
 
 class AddSpectacle extends Action
 {
+    /**
+     * @return string
+     * @throws \Exception
+     * Ajouter un spectacle avec un formulaire en fonction du type de requete Get ou post
+     *
+     */
     public function execute(): string
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
