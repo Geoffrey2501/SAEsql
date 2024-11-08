@@ -22,14 +22,12 @@ class FiltrageAction extends Action
             $lieu = filter_var($_POST['lieu'], FILTER_SANITIZE_NUMBER_INT);
             if ($date != 0) {
                 $res = NRVRepository::filtreDate($date);
-                echo "ok";
             }
 
             if ($lieu - 1 != -1) {
 
                 if (!isset($res) or $res === []) {
                     $res = NRVRepository::filtreLieux($lieu);
-                    echo "test";
                 } else {
                     $r = NRVRepository::filtreLieux($lieu);
                     foreach ($res as $key => $spectacle) {

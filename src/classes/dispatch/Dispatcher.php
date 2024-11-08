@@ -6,6 +6,7 @@ use AddUserAction;
 use iutnc\NRV\action\AddSpectacle;
 use iutnc\NRV\action\DefaultAction;
 use iutnc\NRV\action\DisplayListeSpectacleAction;
+use iutnc\NRV\action\FiltrageAction;
 use iutnc\NRV\repository\NRVRepository;
 use iutnc\NRV\action\Signin;
 
@@ -33,6 +34,10 @@ class Dispatcher
     {
         NRVRepository::setConfig(__DIR__ . '/../../../../config/NRV.db.init');
         switch ($this->action) {
+            case 'filtre':
+                $action = new FiltrageAction();
+                break;
+
             case 'add-spectacle':
                 $action = new AddSpectacle();
                 break;

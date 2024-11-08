@@ -1,6 +1,8 @@
 <?php
 namespace iutnc\NRV\event;
 
+use InvalidArgumentException;
+
 /**
  * Class Soiree
  */
@@ -12,7 +14,6 @@ class Soiree
     private string $nomSoiree;
     private string $themeSoiree;
     private string $dateSoiree;
-    private string $heureSoiree;
     private string $lieuSoiree;
     private string $lieuSpectacle;
     private string $adresseSpectacle;
@@ -32,7 +33,6 @@ class Soiree
      * @param string $nomSoiree
      * @param string $themeSoiree
      * @param string $dateSoiree
-     * @param string $heureSoiree
      * @param string $lieuSoiree
      * @param string $lieuSpectacle
      * @param string $adresseSpectacle
@@ -40,12 +40,11 @@ class Soiree
      * @param array $spectacles
      */
     public function __construct(string $nomSoiree, string $themeSoiree, string $dateSoiree, string $heureSoiree,
-                                string $lieuSoiree, array $spectacles) //string $lieuSpectacle, string $adresseSpectacle, int $nombrePlaces
+                                string $lieuSoiree, array $spectacles, string $lieuSpectacle, string $adresseSpectacle, int $nombrePlaces)
     {
         $this->nomSoiree = $nomSoiree;
         $this->themeSoiree = $themeSoiree;
         $this->dateSoiree = $dateSoiree;
-        $this->heureSoiree = $heureSoiree;
         $this->lieuSoiree = $lieuSoiree;
         $this->lieuSpectacle = $lieuSpectacle;
         $this->adresseSpectacle = $adresseSpectacle;
