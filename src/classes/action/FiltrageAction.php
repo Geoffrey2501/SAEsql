@@ -45,7 +45,7 @@ class FiltrageAction extends Action
                 $html = "<h1>Aucun spectacle ne correspond à votre recherche</h1>";
             } else {
                 $render = new SpectacleRenderer($res);
-                $html .= $render->render();
+                $html .= $render->render(1);
 
             }
 
