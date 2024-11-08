@@ -20,7 +20,7 @@ class DisplayListeSpectacleAction extends Action
         $html = '<div class="spectacle-list">';
         foreach ($soiree as $spectacle) {
             $renderer = new SpectacleRenderer($spectacle);
-            $html .= $renderer->renderLong(); 
+            $html .= $renderer->renderLong();
         }
         $html .= '</div>';
         return $html;
