@@ -41,6 +41,7 @@ class FiltrageAction extends Action
             }
 
 
+
             if (!isset($res) or $res === []) {
                 $html = "<h1>Aucun spectacle ne correspond à votre recherche</h1>";
             } else {
