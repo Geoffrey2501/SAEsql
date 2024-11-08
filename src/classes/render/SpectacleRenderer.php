@@ -20,7 +20,7 @@ class SpectacleRenderer extends EventRenderer {
         return "<div style='text-align: center; padding: 10px 0;'>
                     <h2>" . htmlspecialchars($this->spectacle->titre) . "</h2>
                         <ul style='list-style-type: none; padding: 0;'>
-                        <li><strong>Date:</strong> " . htmlspecialchars("") . "</li>
+                        <li><strong>Date:</strong> " . htmlspecialchars($this->spectacle->date) . "</li>
                         <li><strong>Horaire:</strong> " . htmlspecialchars($this->spectacle->horairePrevisionnel) . "</li>
                         <li><strong>Description:</strong> " . htmlspecialchars($this->spectacle->description) . "</li>
                     </ul>
@@ -32,7 +32,7 @@ class SpectacleRenderer extends EventRenderer {
                     <h2>" . htmlspecialchars($this->spectacle->titre) . "</h2>
                     <ul style='list-style-type: none; padding: 0;'>
                         <li><strong>Artiste:</strong> " . htmlspecialchars($this->renderArtistes()) . "</li>
-                        <li><strong>Date:</strong> " . htmlspecialchars("") . "</li>
+                        <li><strong>Date:</strong> " . htmlspecialchars($this->spectacle->date) . "</li>
                         <li><strong>Horaire:</strong> " . htmlspecialchars($this->spectacle->horairePrevisionnel) . "</li>
                         <li><strong>Description:</strong> " . htmlspecialchars($this->spectacle->description) . "</li>
                     </ul>
