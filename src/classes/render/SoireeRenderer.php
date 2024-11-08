@@ -40,10 +40,12 @@ class SoireeRenderer extends EventRenderer {
     }
 
     public function renderSpectacles(): string {
+
         $spectacles = $this->soiree->spectacles;
         $html = "<ul style='list-style-type: none; padding: 0;'>";
         foreach($spectacles as $spectacle) {
-            $html .= "<li>" . htmlspecialchars($spectacle) . "</li>";
+            $render = new SpectacleRenderer($spectacle);
+            $html .= "<li>" . $render->render(0) . "</li>";
         }
         $html .= "</ul>";
         return $html;
