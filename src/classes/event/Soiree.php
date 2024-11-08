@@ -15,18 +15,10 @@ class Soiree
     private string $themeSoiree;
     private string $dateSoiree;
     private string $lieuSoiree;
-    private string $lieuSpectacle;
-    private string $adresseSpectacle;
+    private string $heureSoiree;
 
-    /**
-     * @var int
-     */
-    private int $nombrePlaces;
-
-    /**
-     * @var array
-     */
     private array $spectacles;
+    private string $description;
 
     /**
      * Soiree constructor.
@@ -34,22 +26,18 @@ class Soiree
      * @param string $themeSoiree
      * @param string $dateSoiree
      * @param string $lieuSoiree
-     * @param string $lieuSpectacle
-     * @param string $adresseSpectacle
-     * @param int $nombrePlaces
      * @param array $spectacles
      */
-    public function __construct(string $nomSoiree, string $themeSoiree, string $dateSoiree, string $heureSoiree,
-                                string $lieuSoiree, array $spectacles, string $lieuSpectacle, string $adresseSpectacle, int $nombrePlaces)
+    public function __construct(string $nomSoiree, string $themeSoiree, string $dateSoiree,
+                                string $lieuSoiree, array $spectacles, string $heureSoiree, string $description)
     {
         $this->nomSoiree = $nomSoiree;
         $this->themeSoiree = $themeSoiree;
         $this->dateSoiree = $dateSoiree;
         $this->lieuSoiree = $lieuSoiree;
-        $this->lieuSpectacle = $lieuSpectacle;
-        $this->adresseSpectacle = $adresseSpectacle;
-        $this->nombrePlaces = $nombrePlaces;
         $this->spectacles = $spectacles;
+        $this->heureSoiree = $heureSoiree;
+        $this->description = $description;
     }
 
     /**

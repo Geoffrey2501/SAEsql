@@ -2,7 +2,9 @@
 
 namespace iutnc\NRV\dispatch;
 
-use AddUserAction;
+
+
+use iutnc\NRV\action\AddSoireeAction;
 use iutnc\NRV\action\AddSpectacle;
 use iutnc\NRV\action\DefaultAction;
 use iutnc\NRV\action\DisplayListeSpectacleAction;
@@ -34,6 +36,11 @@ class Dispatcher
     {
         NRVRepository::setConfig(__DIR__ . '/../../../../config/NRV.db.init');
         switch ($this->action) {
+
+            case 'add-soiree':
+                $action = new AddSoireeAction();
+                break;
+
             case 'filtre':
                 $action = new FiltrageAction();
                 break;
@@ -132,7 +139,7 @@ class Dispatcher
                     <li><a href="?action=signin">Connexion</a></li>
                     <li><a href="?action=add-spectacle">Ajouter Spectacle</a></li>
                     <li><a href="?action=">Vide</a></li>
-                    <li><a href="?action=">Vide</a></li>
+                    <li><a href="?action=add-soiree">AjouterSoirée</a></li>
                 </ul>
             </nav>
             $html

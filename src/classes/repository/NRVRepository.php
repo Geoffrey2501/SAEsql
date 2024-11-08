@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace iutnc\NRV\repository;
 
+use iutnc\NRV\event\Soiree;
 use iutnc\NRV\event\Spectacle;
 
 class NRVRepository
@@ -186,7 +187,7 @@ class NRVRepository
         return $dates;
     }
 
-    public static function getLieux()
+    public function getLieux()
     {
         $pdo = self::getInstance()->getPDO();
         $stmt = $pdo->prepare("SELECT idlieu, nomlieu FROM lieu");
@@ -198,6 +199,17 @@ class NRVRepository
         return $lieux;
     }
 
+    public function getThemes(){
+        $pdo = self::getInstance()->getPDO();
+        $stmt = $pdo->prepare("SELECT idtheme, nomtheme FROM theme");
+        $stmt->execute();
+        $themes = [];
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $themes[$row['idtheme']] = $row['nomtheme'];
+        }
+        return $themes;
+    }
+
 
     /**
      * @return \PDO
@@ -206,5 +218,17 @@ class NRVRepository
     public function getPDO(): \PDO
     {
         return $this->pdo;
+    }
+
+    public function addSoiree(Soiree $soiree):bool
+    {
+       $stmt = $this->pdo->prepare("INSERT INTO soiree (titresoiree, idtheme, date, idlieu, heuresoiree, description) VALUES (:nom, :theme, :date, :lieu, :heure, :description)");
+        try {
+            $stmt->execute([':nom' => $soiree->nomSoiree, ':theme' => $soiree->themeSoiree, ':date' => $soiree->dateSoiree, ':lieu' => $soiree->lieuSoiree, ':heure' => $soiree->heureSoiree, ':description' => $soiree->description]);
+            $res = true;
+        }catch (\Exception $e){
+            $res = false;
+        }
+        return $res;
     }
 }
