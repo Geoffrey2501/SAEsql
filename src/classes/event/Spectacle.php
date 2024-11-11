@@ -18,37 +18,40 @@ class Spectacle
      */
     private string $titre;
     private string $description;
-    private ?string $urlVideo;
+    private ?string $extrait;
     private string $horairePrevisionnel;
+    private string $date;
 
+    private string $style;
 
     /**
      * @var array
      */
     private array $images;
     private array $artistes;
-    private string $date;
+
 
 
     /**
      * @param string $titre
      * @param string $description
-     * @param string|null $urlVideo
+     * @param string|null $extrait
      * @param string $horairePrevisionnel
      * @param array $images
      * @param array $artistes
      */
-    public function __construct(string $titre, string $description, ?string $urlVideo,
+    public function __construct(string $titre, string $description, ?string $extrait,
                                 string $horairePrevisionnel,
-                                array $images, array $artistes, string $date)
+                                array  $images, array $artistes, string $date, string $style)
     {
         $this->titre = $titre;
         $this->description = $description;
-        $this->urlVideo = $urlVideo;
+        $this->extrait = $extrait;
         $this->horairePrevisionnel = $horairePrevisionnel;
         $this->images = $images;
         $this->artistes = $artistes;
         $this->date = $date;
+        $this->style = $style;
     }
 
 

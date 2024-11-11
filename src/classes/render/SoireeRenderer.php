@@ -33,10 +33,9 @@ class SoireeRenderer extends EventRenderer {
                             <li><strong>Date:</strong> " . htmlspecialchars($this->soiree->dateSoiree) . "</li>
                             <li><strong>Lieu:</strong> " . htmlspecialchars($this->soiree->lieuSoiree) . "</li>
                             <li><strong>Heure:</strong> " . htmlspecialchars($this->soiree->heureSoiree) . "</li>
-                            <li><strong>Description:</strong> " . htmlspecialchars($this->soiree->description) . "</li>
-                            <li><strong>Spectacles:</strong> " . $this->renderSpectacles() . "</li>
                         </ul>
-                </div>";
+                </div>". $this->renderSpectacles();
+
     }
 
     public function renderSpectacles(): string {

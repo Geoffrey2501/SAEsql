@@ -20,6 +20,8 @@ class Soiree
     private array $spectacles;
     private string $description;
 
+    private string $video;
+
     /**
      * Soiree constructor.
      * @param string $nomSoiree

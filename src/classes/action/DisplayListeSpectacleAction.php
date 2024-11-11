@@ -17,12 +17,14 @@ class DisplayListeSpectacleAction extends Action
     public function execute(): string
     {
         $soiree = NRVRepository::getInstance()->getSpectacle();
-        $html = '<div class="spectacle-list">';
-        foreach ($soiree as $spectacle) {
+        $html = "";
+        foreach ($soiree as $key => $spectacle) {
+            $id = explode(" ", $key)[1];
             $renderer = new SpectacleRenderer($spectacle);
-            $html .= $renderer->renderLong();
+            $html.= "<a href='?action=soiree&id=".$id."'>";
+            $html .= $renderer->renderCompact();
+            $html .= "</a>";
         }
-        $html .= '</div>';
         return $html;
     }
 }
