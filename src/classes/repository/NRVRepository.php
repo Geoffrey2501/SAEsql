@@ -138,7 +138,7 @@ class NRVRepository
         $spectacles = [];
         while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
             $id = $row['idspectacle'];
-            $stmt2 = $pdo->prepare("SELECT chemin FROM spectacleimage inner join Image on spectacleimage.idimage=Image.idimage where idspec = :id");
+            $stmt2 = $pdo->prepare("SELECT nom_image FROM spectacleimage where idspec = :id");
             $stmt2->execute(['id' => $id]);
             $images = [];
             while ($row2 = $stmt2->fetch(\PDO::FETCH_ASSOC)) {
@@ -155,7 +155,7 @@ class NRVRepository
      */
     public static function filtreLieux(Int $id):array{
         $pdo = self::getInstance()->getPDO();
-        $stmt = $pdo->prepare("SELECT spectacle.idspec as idspectacle, libelle, titrespec, video,horaire, nomstyle 
+        $stmt = $pdo->prepare("SELECT spectacle.idspec as idspectacle, libelle, titrespec, video,horaire, nomstyle, date 
                                             FROM spectacle inner join soireespectacle on spectacle.idspec=soireespectacle.idspec
                                             inner join Style on Spectacle.IdStyle=Style.idStyle
                                             inner join soiree on soireespectacle.idsoiree=soiree.idsoiree
@@ -164,7 +164,7 @@ class NRVRepository
 
         while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
             $id = $row['idspectacle']."boucle";
-            $stmt2 = $pdo->prepare("SELECT chemin FROM spectacleimage inner join Image on spectacleimage.idimage=Image.idimage where idspec = :id");
+            $stmt2 = $pdo->prepare("SELECT nom_image FROM spectacleimage where idspec = :id");
             $stmt2->execute(['id' => $id]);
             $images = [];
             while ($row2 = $stmt2->fetch(\PDO::FETCH_ASSOC)) {
@@ -185,7 +185,7 @@ class NRVRepository
 
         // Requête pour récupérer les spectacles filtrés par style
         $stmt = $pdo->prepare("
-        SELECT Spectacle.IdSpec as idspectacle, libelle, titrespec, video,horaire, nomstyle, date
+        SELECT Spectacle.IdSpec , libelle, titrespec, video,horaire, nomstyle, date
                                             FROM spectacle inner join soireespectacle on spectacle.idspec=soireespectacle.idspec
                                             inner join Style on Spectacle.IdStyle=Style.idStyle
                                             inner join soiree on soireespectacle.idsoiree=soiree.idsoiree
@@ -200,10 +200,8 @@ class NRVRepository
             $idSpec = $row['IdSpec'];
 
             // Deuxième requête pour récupérer les images du spectacle
-            $stmt2 = $pdo->prepare("SELECT chemin FROM spectacleimage SI
-                                 INNER JOIN image I ON SI.idimage = I.idimage
-                                 WHERE SI.idspec = :idSpec");
-            $stmt2->execute([':idSpec' => $idSpec]);
+            $stmt2 = $pdo->prepare("SELECT nom_image FROM spectacleimage where idspec = :id");
+            $stmt2->execute([':id' => $idSpec]);
 
             $images = [];
             while ($row2 = $stmt2->fetch(\PDO::FETCH_ASSOC)) {
@@ -232,7 +230,7 @@ class NRVRepository
         return $dates;
     }
 
-    public function getLieux()
+    public static function getLieux()
     {
         $pdo = self::getInstance()->getPDO();
         $stmt = $pdo->prepare("SELECT idlieu, nomlieu FROM lieu");

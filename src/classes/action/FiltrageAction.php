@@ -20,6 +20,7 @@ class FiltrageAction extends Action
             $style = filter_var($_POST['style'], FILTER_SANITIZE_NUMBER_INT);
             $date = filter_var($_POST['date'], FILTER_SANITIZE_SPECIAL_CHARS);
             $lieu = filter_var($_POST['lieu'], FILTER_SANITIZE_NUMBER_INT);
+
             if ($date != 0) {
                 $res = NRVRepository::filtreDate($date);
             }
@@ -39,14 +40,30 @@ class FiltrageAction extends Action
                     }
                 }
             }
+            if ($style != 0) {
+                if (!isset($res) or $res === []) {
+                    $res = NRVRepository::filtreStyle($style);
+                } else {
+                    $r = NRVRepository::filtreStyle($style);
+                    foreach ($res as $key => $spectacle) {
+                        {
+                            if (!in_array($spectacle, $r)) {
+                                unset($res[$key]);
+                            }
+                        }
+                    }
+                }
+            }
 
 
 
             if (!isset($res) or $res === []) {
                 $html = "<h1>Aucun spectacle ne correspond à votre recherche</h1>";
             } else {
-                $render = new SpectacleRenderer($res);
-                $html .= $render->render(1);
+                foreach ($res as $spectacle) {
+                $render = new SpectacleRenderer($spectacle);
+                $html .= $render->render(0);
+                }
 
             }
 

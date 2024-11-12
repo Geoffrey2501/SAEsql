@@ -3,7 +3,7 @@
 namespace iutnc\NRV\dispatch;
 
 
-use AddUserAction;
+use iutnc\NRV\action\AddUserAction;
 use iutnc\NRV\action\AddSoireeAction;
 use iutnc\NRV\action\AddSpectacle;
 use iutnc\NRV\action\AddSpectacle2Soiree;
@@ -85,6 +85,7 @@ class Dispatcher
           <li><a href='?action=default'>Accueil</a></li>
             <li><a href='?action=display-spectacle'>Afficher spectacle</a></li>
             <li><a href='?action=signin'>Connexion</a></li>
+            <li><a href='?action=filtre'>Recherche</a></li>
         ";
 
         if (isset($_SESSION['user'])) {

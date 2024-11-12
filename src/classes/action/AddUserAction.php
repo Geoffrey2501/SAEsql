@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+namespace iutnc\NRV\action;
 
 use iutnc\NRV\action\Action;
 use iutnc\NRV\auth\AuthnProvider;

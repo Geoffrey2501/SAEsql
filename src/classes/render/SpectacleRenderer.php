@@ -85,7 +85,7 @@ img {
 <div class='spectacle-card'>
     <div class='spectacle-image'>
         <!-- Remplacez le lien avec l'URL de l'image de votre spectacle -->
-        <img src='/../../../../images/stage.jpg' alt='Image du spectacle'>
+        <img src='./../images/stage.png' alt='Image du spectacle'>
     </div>
     <h2 class='spectacle-titre'>".$this->spectacle->titre."</h2>
 <ul class='spectacle-details'>
