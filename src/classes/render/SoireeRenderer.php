@@ -8,6 +8,8 @@ use iutnc\NRV\event\Soiree;
 class SoireeRenderer extends EventRenderer {
     protected Soiree $soiree;
 
+    private string $style;
+
     public function __construct(Soiree $soiree) {
         $this->soiree = $soiree;
         $this->style = "<style>
