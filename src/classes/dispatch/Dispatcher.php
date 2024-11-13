@@ -10,6 +10,7 @@ use iutnc\NRV\action\AddSpectacle2Soiree;
 use iutnc\NRV\action\DefaultAction;
 use iutnc\NRV\action\DisplayListeSpectacleAction;
 use iutnc\NRV\action\DisplaySoiree;
+use iutnc\NRV\action\DisplaySpectacle;
 use iutnc\NRV\action\FiltrageAction;
 use iutnc\NRV\repository\NRVRepository;
 use iutnc\NRV\action\Signin;
@@ -38,6 +39,9 @@ class Dispatcher
     {
         NRVRepository::setConfig(__DIR__ . '/../../../../config/NRV.db.init');
         switch ($this->action) {
+            case 'spectacleINfo':
+                $action = new DisplaySpectacle();
+                break;
             case 'soiree':
                 $action = new DisplaySoiree();
                 break;

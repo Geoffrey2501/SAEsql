@@ -99,7 +99,7 @@ img {
         return $this->style."
         <div class='spectacle-card'>
             <div class='spectacles-image'>
-                <img src='./../images/{$this->spectacle->images[0]}' class='spectacle-image2' alt='Image du spectacle'>
+                <img src='./../images/{".$this->spectacle->images[0]."' class='spectacle-image2' alt='Image du spectacle'>
             </div>
             <h2 class='spectacle-titre'>".$this->spectacle->titre."</h2>
             <ul class='spectacle-details'>

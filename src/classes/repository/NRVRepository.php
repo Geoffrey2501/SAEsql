@@ -97,12 +97,8 @@ class NRVRepository
     public static function addSpectacle(string $libelle, string $titre, string $video, int $style)
     {
         $pdo = self::getInstance()->getPDO();
-        $stmt = $pdo->prepare("SELECT MAX(idSpec) AS max_id FROM spectacle");
-        $stmt->execute();
-        $id = $stmt->fetch(\PDO::FETCH_ASSOC);
-        $id = (int)$id['max_id'] + 1;
-        $stmt = $pdo->prepare("INSERT INTO spectacle (idSpec, libelle, titrespec, video, idstyle) VALUES (:id, :libelle, :titre, :video, :style)");
-        $stmt->execute([':id' => $id, ':libelle' => $libelle, ':titre' => $titre, ':video' => $video, ':style' => $style]);
+        $stmt = $pdo->prepare("INSERT INTO spectacle ( libelle, titrespec, video, idstyle) VALUES ( :libelle, :titre, :video, :style)");
+        $stmt->execute([ ':libelle' => $libelle, ':titre' => $titre, ':video' => $video, ':style' => $style]);
     }
 
     /**
@@ -142,7 +138,7 @@ class NRVRepository
             $stmt2->execute(['id' => $id]);
             $images = [];
             while ($row2 = $stmt2->fetch(\PDO::FETCH_ASSOC)) {
-                $images[] = $row2['chemin'];
+                $images[] = $row2['nom_image'];
             }
             $spectacles[(int)$row['idspectacle']] = new Spectacle($row['titrespec'], $row['libelle'], $row['video'], $row["horaire"], $images, [], $row['date'], $row['nomstyle']);
         }
@@ -168,7 +164,7 @@ class NRVRepository
             $stmt2->execute(['id' => $id]);
             $images = [];
             while ($row2 = $stmt2->fetch(\PDO::FETCH_ASSOC)) {
-                $images[] = $row2['chemin'];
+                $images[] = $row2['nom_image'];
             }
             $spectacles[(int)$row['idspectacle']] = new Spectacle($row['titrespec'], $row['libelle'], $row['video'], $row["horaire"], $images, [], $row['date'], $row['nomstyle']);
         }
@@ -205,7 +201,7 @@ class NRVRepository
 
             $images = [];
             while ($row2 = $stmt2->fetch(\PDO::FETCH_ASSOC)) {
-                $images[] = $row2['chemin'];
+                $images[] = $row2['nom_image'];
             }
 
             // Création d'un objet Spectacle avec les données récupérées
@@ -252,6 +248,22 @@ class NRVRepository
         }
         return $themes;
     }
+
+    public static function getStyle(String $style): int{
+        $pdo = self::getInstance()->getPDO();
+        $stmt = $pdo->prepare("SELECT idstyle FROM style where nomstyle = :style");
+        $stmt->execute([':style'=>$style]);
+        return $stmt->fetch(\PDO::FETCH_ASSOC)['idstyle'];
+    }
+
+    public static function getLieu(int $idsoiree): int{
+        $pdo = self::getInstance()->getPDO();
+        $stmt = $pdo->prepare("SELECT idlieu FROM soiree where idsoiree = :id");
+        $stmt->execute([':id'=>$idsoiree]);
+        return $stmt->fetch(\PDO::FETCH_ASSOC)['idlieu'];
+    }
+
+
 
 
     /**
@@ -364,13 +376,6 @@ class NRVRepository
         }
         return $spectacles;
     }
-
-
-
-
-
-
-
 
 
     public static function addImageSpectacle(int $idSpectacle, string $nomImage): void
