@@ -378,19 +378,10 @@ class NRVRepository
 
         $pdo = self::getInstance()->getPDO();
 
-        $stmt = $pdo->prepare("SELECT MAX(idimage) AS max_id FROM image");
-        $stmt->execute();
-        $id = $stmt->fetch(\PDO::FETCH_ASSOC);
-        $idImage = (int)$id['max_id'] + 1;
-
-
-        $stmt = $pdo->prepare("INSERT INTO image (idimage, Chemin) VALUES (:idimage, :nomImage)");
-        $stmt->execute([':idimage' => $idImage, ':nomImage' => $nomImage]);
-
         $fileName = basename($nomImage);
 
-        $stmt = $pdo->prepare("INSERT INTO spectacleimage (idimage, idspec, nom_image) VALUES (:idimage, :idspec, :nom)");
-        $stmt->execute([':idimage' => $idImage, ':idspec' => $idSpectacle, ':nom' => $fileName]);
+        $stmt = $pdo->prepare("INSERT INTO spectacleimage ( idspec, nom_image) VALUES ( :idspec, :nom)");
+        $stmt->execute([':idspec' => $idSpectacle, ':nom' => $fileName]);
     }
 
 
