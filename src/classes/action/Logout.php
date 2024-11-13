@@ -9,12 +9,9 @@ class Logout extends Action
     public function execute(): string
     {
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            // Verifiaction de session
-            if (session_status() === PHP_SESSION_NONE) {
-                session_start();
-            }
-//            session_unset();
+            session_unset();
             session_destroy();
+
             // Deconnexion
             return <<<HTML
         <div class="alert alert-success mt-3 text-center" role="alert">
