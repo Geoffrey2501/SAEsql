@@ -16,6 +16,7 @@ class Soiree
     private string $dateSoiree;
     private string $lieuSoiree;
     private string $heureSoiree;
+    private float $tarif;
 
     private array $spectacles;
     private string $description;
@@ -29,9 +30,10 @@ class Soiree
      * @param string $dateSoiree
      * @param string $lieuSoiree
      * @param array $spectacles
+     * @param float $tarif
      */
     public function __construct(string $nomSoiree, string $themeSoiree, string $dateSoiree,
-                                string $lieuSoiree, array $spectacles, string $heureSoiree, string $description)
+                                string $lieuSoiree, array $spectacles, string $heureSoiree, string $description, float $tarif)
     {
         $this->nomSoiree = $nomSoiree;
         $this->themeSoiree = $themeSoiree;
@@ -40,6 +42,7 @@ class Soiree
         $this->spectacles = $spectacles;
         $this->heureSoiree = $heureSoiree;
         $this->description = $description;
+        $this->tarif = $tarif;
     }
 
     /**

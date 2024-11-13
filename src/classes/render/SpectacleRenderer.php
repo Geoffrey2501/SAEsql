@@ -30,7 +30,7 @@ class SpectacleRenderer extends EventRenderer {
 }
 
 .spectacle-cardL {
-    width: 40%; /* Utilise 80% de la largeur disponible */
+    width: 80%; /* Utilise 80% de la largeur disponible */
     max-width: 800px; /* Augmente la largeur maximale pour le renderLong */
     min-height: 400px; /* Hauteur minimum agrandie */
     background: #f9f9f9;
@@ -68,48 +68,61 @@ img {
     color: #555;
 }
 
-.spectacle-image {
+.spectacle-images {
      display: grid;
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Chaque image occupe une colonne de 100px minimum */
     gap: 10px; /* Espace entre les images */
     justify-items: center;
 }
+
+.spectacle-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border: 2px solid #333;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.spectacle-image2 {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border: 2px solid #333;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
 </style>";
     }
 
-        public function renderCompact(): string {
-
-
+    public function renderCompact(): string {
         return $this->style."
-
-<div class='spectacle-card'>
-    <div class='spectacle-image'>
-        <!-- Remplacez le lien avec l'URL de l'image de votre spectacle -->
-        <img src='./../images/stage.png' alt='Image du spectacle'>
-    </div>
-    <h2 class='spectacle-titre'>".$this->spectacle->titre."</h2>
-<ul class='spectacle-details'>
-    <li class='spectacle-time'><strong>Date:</strong> ".$this->spectacle->date."</li>
-    <li class='spectacle-horaire'><strong>Horaire:</strong>".$this->spectacle->horairePrevisionnel."</li>
-    <li class='spectacle-description'><strong>Description:</strong>".$this->spectacle->description."</li>
-</ul>
-</div>
-";
+        <div class='spectacle-card'>
+            <div class='spectacles-image'>
+                <img src='./../images/{$this->spectacle->images[0]}' class='spectacle-image2' alt='Image du spectacle'>
+            </div>
+            <h2 class='spectacle-titre'>".$this->spectacle->titre."</h2>
+            <ul class='spectacle-details'>
+                <li class='spectacle-time'><strong>Date : </strong> ".$this->spectacle->date."</li>
+                <li class='spectacle-horaire'><strong>Horaire : </strong>".$this->spectacle->horairePrevisionnel."</li>
+                <li class='spectacle-description'><strong>Description : </strong>".$this->spectacle->description."</li>
+            </ul>
+        </div>
+        ";
     }
 
     public function renderLong(): string {
         $html= $this->style."<div class='spectacle-cardL'><h2 class='spectacle-titre'>" . $this->spectacle->titre . "</h2>
                         <ul class='spectacle-details'>
-                        <li class='spectacle-time'><strong>Date:</strong> " . $this->spectacle->date . "</li>
-                        <li class='spectacle-horaire'><strong>Horaire:</strong>" . $this->spectacle->horairePrevisionnel . "</li>
-                        <li class='spectacle-description'><strong>Description:</strong>" . $this->spectacle->description . "</li>
-                        <li><strong>Style:</strong> " . $this->spectacle->style . "</li>
-                        <li><strong>Image:</strong> " . $this->renderImage() . "</li>";
+                        <li class='spectacle-horaire'><strong>Heure de début : </strong>" . $this->spectacle->horairePrevisionnel . "</li>
+                        <li class='spectacle-description'><strong>Description : </strong>" . $this->spectacle->description . "</li>
+                        <li><strong>Style : </strong> " . $this->spectacle->style . "</li>
+                        <li><strong>Aperçus : </strong> " . $this->renderImage() . "</li>";
         if($this->spectacle->extrait != null) {
             if(str_contains($this->spectacle->extrait, ".mp4"))$html .= "<li><strong>Video:</strong> <video controls><source src='" . $this->spectacle->extrait . "' type='video/mp4'></video></li>";
             else $html .= "<li><strong>Video:</strong> <audio controls><source src='" . $this->spectacle->extrait . "' type='audio/mp3'></audio></li>";
         }
-           $html.=" </ul></div>";
+        $html.=" </ul></div>";
         return $html;
     }
 
@@ -128,9 +141,9 @@ img {
         return $html;
     }
     public function renderImage(): string {
-        $html = " <div class='spectacle-image'>";
-        for($i = 0; $i < 3; $i++) {
-            $html .= "<img src='./../images/stage.png' alt='Image du spectacle'>";
+        $html = " <div class='spectacle-images'>";
+        foreach($this->spectacle->images as $image) {
+            $html .= "<img src='./../images/$image' class='spectacle-image' alt='Image du spectacle'>";
         }
 
         return $html."</div>";
