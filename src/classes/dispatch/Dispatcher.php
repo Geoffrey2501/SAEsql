@@ -13,6 +13,7 @@ use iutnc\NRV\action\DisplaySoiree;
 use iutnc\NRV\action\FiltrageAction;
 use iutnc\NRV\repository\NRVRepository;
 use iutnc\NRV\action\Signin;
+use iutnc\NRV\action\Logout;
 
 
 class Dispatcher
@@ -59,6 +60,9 @@ class Dispatcher
             case 'signin':
                 $action = new Signin();
                 break;
+            case 'logout':
+                $action = new Logout();
+                break;
             case 'add-user':
                 $action = new AddUserAction();
                 break;
@@ -92,6 +96,11 @@ class Dispatcher
             $menu .= "<li><a href='?action=add-spectacle'>Ajouter spectacle</a></li>";
             $menu .= "<li><a href='?action=add-soiree'>Ajouter soirée</a></li>";
             $menu .= "<li><a href='?action=add-spectacle2soiree'>Ajouter spectacle à une soirée</a></li>";
+
+            if ($_SESSION['user'] !== null) {
+                $menu .= "<li><a href='?action=logout'>Deconnexion</a></li>";
+            }
+
             if($_SESSION['user']['role'] == 100){
                 $menu .= "<li><a href='?action=add-user'>Ajouter utilisateur</a></li>";
             }
