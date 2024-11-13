@@ -387,9 +387,10 @@ class NRVRepository
         $stmt = $pdo->prepare("INSERT INTO image (idimage, Chemin) VALUES (:idimage, :nomImage)");
         $stmt->execute([':idimage' => $idImage, ':nomImage' => $nomImage]);
 
+        $fileName = basename($nomImage);
 
         $stmt = $pdo->prepare("INSERT INTO spectacleimage (idimage, idspec, nom_image) VALUES (:idimage, :idspec, :nom)");
-        $stmt->execute([':idimage' => $idImage, ':idspec' => $idSpectacle, ':nom' => $nomImage]);
+        $stmt->execute([':idimage' => $idImage, ':idspec' => $idSpectacle, ':nom' => $fileName]);
     }
 
 

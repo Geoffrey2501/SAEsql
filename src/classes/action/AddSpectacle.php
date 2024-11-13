@@ -17,7 +17,7 @@ class AddSpectacle extends Action
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $nameFile = filter_var($_FILES['video']['name'], FILTER_SANITIZE_SPECIAL_CHARS);
-            $uploadDir = __DIR__ . '/../../../../audio/';
+            $uploadDir = realpath(__DIR__ . '/../../../../audio/') . DIRECTORY_SEPARATOR;
             $uploadFile = $uploadDir . $nameFile;
 
             if (move_uploaded_file($_FILES['video']['tmp_name'], $uploadFile)) {
@@ -37,7 +37,7 @@ class AddSpectacle extends Action
             }
 
 
-            $imagePath = realpath(__DIR__ . '/../../../../images') . '/';
+            $imagePath = realpath(__DIR__ . '/../../../../images/') . DIRECTORY_SEPARATOR;
 
 
             foreach ($_FILES['image']['name'] as $index => $nameImage) {
@@ -45,6 +45,7 @@ class AddSpectacle extends Action
                 $uploadFileImage = $imagePath . $nameImage;
 
                 if (move_uploaded_file($_FILES['image']['tmp_name'][$index], $uploadFileImage)) {
+                    echo $uploadFileImage;
                     $id = NRVRepository::getIdSpectacle($libelle, $titre);
                     NRVRepository::addImageSpectacle($id, $uploadFileImage);
                 }
