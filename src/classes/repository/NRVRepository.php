@@ -51,7 +51,7 @@ class NRVRepository
     {
         $pdo = self::getInstance()->getPDO();
         //requete sql pour recuperer les spectacles et leur horaire
-        $stmt = $pdo->prepare("SELECT Spectacle.IdSpec, soiree.idsoiree , libelle, titrespec, video,horaire, nomstyle, date FROM spectacle inner join soireespectacle on spectacle.idspec=soireespectacle.idspec
+        $stmt = $pdo->prepare("SELECT Spectacle.IdSpec, soiree.idsoiree , libelle, titrespec, video, horaire, nomstyle, date FROM spectacle inner join soireespectacle on spectacle.idspec=soireespectacle.idspec
                                             inner join Style on Spectacle.IdStyle=Style.idStyle
                                             inner join soiree on soiree.idsoiree=soireespectacle.idsoiree ;");
         $stmt->execute();
@@ -304,7 +304,7 @@ class NRVRepository
     public static function getSoiree(int $idSoiree) {
         $pdo = self::getInstance()->getPDO();
 
-        $stmt = $pdo->prepare("SELECT TitreSoiree, NomTheme, Date, heuresoiree, NomLieu, Descriptif FROM soiree
+        $stmt = $pdo->prepare("SELECT TitreSoiree, NomTheme, Date, heuresoiree, NomLieu, Descriptif, tarif FROM soiree
                                         INNER JOIN theme ON theme.IdTheme=soiree.IdTheme
                                         INNER JOIN lieu ON lieu.IdLieu=soiree.IdLieu
                                         WHERE IdSoiree = :id");
@@ -317,7 +317,7 @@ class NRVRepository
         while ($row2 = $stmt2->fetch(\PDO::FETCH_ASSOC)) {
             $spectacles[] = self::getSpectacleById($row2['IdSpec']);
         }
-        return new Soiree($row['TitreSoiree'], $row['NomTheme'], $row['Date'], $row['NomLieu'], $spectacles, $row['heuresoiree'], $row['Descriptif']);
+        return new Soiree($row['TitreSoiree'], $row['NomTheme'], $row['Date'], $row['NomLieu'], $spectacles, $row['heuresoiree'], $row['Descriptif'], $row['tarif']);
 
     }
 
@@ -378,18 +378,10 @@ class NRVRepository
 
         $pdo = self::getInstance()->getPDO();
 
-        $stmt = $pdo->prepare("SELECT MAX(idimage) AS max_id FROM image");
-        $stmt->execute();
-        $id = $stmt->fetch(\PDO::FETCH_ASSOC);
-        $idImage = (int)$id['max_id'] + 1;
+        $fileName = basename($nomImage);
 
-
-        $stmt = $pdo->prepare("INSERT INTO image (idimage, Chemin) VALUES (:idimage, :nomImage)");
-        $stmt->execute([':idimage' => $idImage, ':nomImage' => $nomImage]);
-
-
-        $stmt = $pdo->prepare("INSERT INTO spectacleimage (idimage, idspec, nom_image) VALUES (:idimage, :idspec, :nom)");
-        $stmt->execute([':idimage' => $idImage, ':idspec' => $idSpectacle, ':nom' => $nomImage]);
+        $stmt = $pdo->prepare("INSERT INTO spectacleimage ( idspec, nom_image) VALUES ( :idspec, :nom)");
+        $stmt->execute([':idspec' => $idSpectacle, ':nom' => $fileName]);
     }
 
 
