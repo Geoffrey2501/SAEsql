@@ -13,8 +13,8 @@ class Logout extends Action
             if (session_status() === PHP_SESSION_NONE) {
                 session_start();
             }
-
-            $_SESSION['user'] = null;
+//            session_unset();
+            session_destroy();
             // Deconnexion
             return <<<HTML
         <div class="alert alert-success mt-3 text-center" role="alert">
