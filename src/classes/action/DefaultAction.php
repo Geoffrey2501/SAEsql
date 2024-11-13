@@ -12,6 +12,6 @@ class DefaultAction extends Action
      */
     public function execute(): string
     {
-        return "Bienvenue sur le site de la NRV";
+        return "<h1>Bienvenue sur le site de la NRV</h1>";
     }
 }
