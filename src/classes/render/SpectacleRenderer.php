@@ -98,7 +98,7 @@ img {
     }
 
     public function renderLong(): string {
-        $html= $this->style."<div class='spectacle-cardL'><h2 class='spectacle-titre'>" . htmlspecialchars($this->spectacle->titre) . "</h2>
+        $html= $this->style."<div class='spectacle-cardL'><h2 class='spectacle-titre'>" . $this->spectacle->titre . "</h2>
                         <ul class='spectacle-details'>
                         <li class='spectacle-time'><strong>Date:</strong> " . $this->spectacle->date . "</li>
                         <li class='spectacle-horaire'><strong>Horaire:</strong>" . $this->spectacle->horairePrevisionnel . "</li>
@@ -122,7 +122,7 @@ img {
 
 
         foreach($artistes as $artiste) {
-            $html .= "<li>" . htmlspecialchars($artiste) . "</li>";
+            $html .= "<li>" . $artiste . "</li>";
         }
         $html .= "</ul>";
         return $html;

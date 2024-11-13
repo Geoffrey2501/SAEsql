@@ -14,12 +14,12 @@ class SoireeRenderer extends EventRenderer {
 
     public function renderCompact(): string {
         return "<div style='text-align: center; padding: 10px 0;'>
-                    <h2>Soirée: " . htmlspecialchars($this->soiree->nomSoiree) . "</h2>
+                    <h2>Soiree: " . $this->soiree->nomSoiree . "</h2>
                         <ul style='list-style-type: none; padding: 0;'>      
-                            <li><strong>Thème:</strong> " . htmlspecialchars($this->soiree->themeSoiree) . "</li>
-                            <li><strong>Date:</strong> " . htmlspecialchars($this->soiree->dateSoiree) . "</li>
-                            <li><strong>Lieu:</strong> " . htmlspecialchars($this->soiree->lieuSoiree) . "</li>
-                            <li><strong>Heure:</strong> " . htmlspecialchars($this->soiree->heureSoiree) . "</li>
+                            <li><strong>Thème:</strong>" . $this->soiree->themeSoiree . "</li>
+                            <li><strong>Date:</strong>" . $this->soiree->dateSoiree . "</li>
+                            <li><strong>Lieu:</strong>" . $this->soiree->lieuSoiree . "</li>
+                            <li><strong>Heure:</strong>" . $this->soiree->heureSoiree . "</li>
                         </ul>
                 </div>";
     }
@@ -27,12 +27,12 @@ class SoireeRenderer extends EventRenderer {
     public function renderLong() : string
     {
             return "<div style='text-align: center; padding: 10px 0;'>
-                    <h2>Soirée: " . htmlspecialchars($this->soiree->nomSoiree) . "</h2>
+                    <h2>Soiree: " . $this->soiree->nomSoiree . "</h2>
                         <ul style='list-style-type: none; padding: 0;'>      
-                            <li><strong>Thème:</strong> " . htmlspecialchars($this->soiree->themeSoiree) . "</li>
-                            <li><strong>Date:</strong> " . htmlspecialchars($this->soiree->dateSoiree) . "</li>
-                            <li><strong>Lieu:</strong> " . htmlspecialchars($this->soiree->lieuSoiree) . "</li>
-                            <li><strong>Heure:</strong> " . htmlspecialchars($this->soiree->heureSoiree) . "</li>
+                            <li><strong>Thème:</strong> " . $this->soiree->themeSoiree ." </li>
+                            <li><strong>Date:</strong> " . $this->soiree->dateSoiree . "</li>
+                            <li><strong>Lieu:</strong> " . $this->soiree->lieuSoiree . "</li>
+                            <li><strong>Heure:</strong>" . $this->soiree->heureSoiree . "</li>
                         </ul>
                 </div>". $this->renderSpectacles();
 

@@ -296,7 +296,7 @@ class NRVRepository
         $images = [];
 
         while ($row2 = $stmt2->fetch(\PDO::FETCH_ASSOC)) {
-            $images[] = $row2['chemin'];
+            $images[] = $row2['nom_image'];
         }
         return new Spectacle($row['titrespec'], $row['libelle'], $row['video'], $row["horaire"], $images, [], $row['date'], $row['nomstyle']);
     }
@@ -364,4 +364,47 @@ class NRVRepository
         }
         return $spectacles;
     }
+
+
+
+
+
+
+
+
+
+    public static function addImageSpectacle(int $idSpectacle, string $nomImage): void
+    {
+
+        $pdo = self::getInstance()->getPDO();
+
+        $stmt = $pdo->prepare("SELECT MAX(idimage) AS max_id FROM image");
+        $stmt->execute();
+        $id = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $idImage = (int)$id['max_id'] + 1;
+
+
+        $stmt = $pdo->prepare("INSERT INTO image (idimage, Chemin) VALUES (:idimage, :nomImage)");
+        $stmt->execute([':idimage' => $idImage, ':nomImage' => $nomImage]);
+
+
+        $stmt = $pdo->prepare("INSERT INTO spectacleimage (idimage, idspec, nom_image) VALUES (:idimage, :idspec, :nom)");
+        $stmt->execute([':idimage' => $idImage, ':idspec' => $idSpectacle, ':nom' => $nomImage]);
+    }
+
+
+
+    public static function getIdSpectacle(string $libelle, string $titre)
+    {
+        $pdo = self::getInstance()->getPDO();
+        $stmt = $pdo->prepare("SELECT idSpec FROM spectacle WHERE libelle = :libelle AND titrespec = :titre");
+        $stmt->execute([':libelle' => $libelle, ':titre' => $titre]);
+        $id = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $id['idSpec'];
+    }
+
+
+
+
+
 }
