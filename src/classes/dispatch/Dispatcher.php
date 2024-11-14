@@ -12,6 +12,7 @@ use iutnc\NRV\action\DisplayListeSpectacleAction;
 use iutnc\NRV\action\DisplaySoiree;
 use iutnc\NRV\action\DisplaySpectacle;
 use iutnc\NRV\action\FiltrageAction;
+use iutnc\NRV\action\UserLogOutAction;
 use iutnc\NRV\repository\NRVRepository;
 use iutnc\NRV\action\Signin;
 
@@ -69,6 +70,9 @@ class Dispatcher
             case 'display-spectacle':
                 $action = new DisplayListeSpectacleAction();
                 break;
+            case 'user-logout':
+                $action = new UserLogOutAction();
+                break;
 
             default:
                 $action = new DefaultAction();
@@ -96,6 +100,7 @@ class Dispatcher
             $menu .= "<li><a href='?action=add-spectacle'>Ajouter spectacle</a></li>";
             $menu .= "<li><a href='?action=add-soiree'>Ajouter soirée</a></li>";
             $menu .= "<li><a href='?action=add-spectacle2soiree'>Ajouter spectacle à une soirée</a></li>";
+            $menu .= "<li><a href='?action=user-logout'>Se déconnecter</a></li>";
             if($_SESSION['user']['role'] == 100){
                 $menu .= "<li><a href='?action=add-user'>Ajouter utilisateur</a></li>";
             }
