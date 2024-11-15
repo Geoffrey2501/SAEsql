@@ -19,8 +19,8 @@ class Signin extends Action
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
             $password = filter_var($_POST['password'], FILTER_SANITIZE_SPECIAL_CHARS);
-            echo "email : ".$email;
-            echo "password : ".$password;
+            //echo "email : ".$email;
+            //echo "password : ".$password;
             try {
                 AuthnProvider::signin($repo->getPDO(), $email, $password);
                 $html="<h1>Vous êtes connecté</h1>";
