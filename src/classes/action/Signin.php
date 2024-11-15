@@ -8,6 +8,11 @@ use \iutnc\NRV\repository\NRVRepository;
 class Signin extends Action
 {
 
+    /**
+     * revoie un formulaire de connexion si la méthode est GET
+     * sinon vérifie les identifiants et connecte l'utilisateur
+     * @return string
+     */
     public function execute(): string
     {
         $repo = NRVRepository::getInstance();

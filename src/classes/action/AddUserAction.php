@@ -9,7 +9,10 @@ use \iutnc\NRV\repository\NRVRepository;
 
 class AddUserAction extends Action
 {
-
+    /**
+     * ajout d'un utilisareur à la base de donnée si la requête est de type post et que l'utilisateur est admin
+     * @return string
+     */
     public function execute(): string
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

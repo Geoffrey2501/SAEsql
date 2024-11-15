@@ -3,13 +3,17 @@ declare(strict_types=1);
 
 namespace iutnc\NRV\render;
 use iutnc\NRV\event\Spectacle;
-
+use iutnc\NRV\repository\NRVRepository;
 
 
 class SpectacleRenderer extends EventRenderer {
-
+    /**
+     * @var Spectacle
+     */
     protected Spectacle $spectacle;
-
+    /**
+     * @var string
+     */
     private string $style;
 
 
@@ -94,7 +98,11 @@ img {
 }
 </style>";
     }
-
+    /**
+     * affiche les spectacles de manière compacte
+     * @param int $selector
+     * @return string
+     */
     public function renderCompact(): string {
         return $this->style."
         <div class='spectacle-card'>
@@ -110,9 +118,14 @@ img {
         </div>
         ";
     }
-
+    /**
+     * affiche les spectacles de manière longue
+     * @return string
+     */
     public function renderLong(): string {
-        $html= $this->style."<div class='spectacle-cardL'><h2 class='spectacle-titre'>" . $this->spectacle->titre . "</h2>
+        $i = NRVRepository::getIdSpectacle($this->spectacle->description, $this->spectacle->titre);
+
+        $html= $this->style."<a href='?action=display-spectacle-filtre&idspec=".$i."&idsoiree=".NRVRepository::getIdSoiree($this->spectacle->date, $i)."'><div class='spectacle-cardL'><h2 class='spectacle-titre'>" . $this->spectacle->titre . "</h2>
                         <ul class='spectacle-details'>
                         <li class='spectacle-horaire'><strong>Heure de début : </strong>" . $this->spectacle->horairePrevisionnel . "</li>
                         <li class='spectacle-description'><strong>Description : </strong>" . $this->spectacle->description . "</li>
@@ -122,10 +135,13 @@ img {
             if(str_contains($this->spectacle->extrait, ".mp4"))$html .= "<li><strong>Video:</strong> <video controls><source src='" . $this->spectacle->extrait . "' type='video/mp4'></video></li>";
             else $html .= "<li><strong>Video:</strong> <audio controls><source src='" . $this->spectacle->extrait . "' type='audio/mp3'></audio></li>";
         }
-        $html.=" </ul></div>";
+        $html.=" </ul></div></a>";
         return $html;
     }
-
+    /**
+     * affiche les artistes du spectacle
+     * @return string
+     */
     public function renderArtistes(): string {
 
         $artistes = $this->spectacle->artistes;
@@ -140,6 +156,10 @@ img {
         $html .= "</ul>";
         return $html;
     }
+    /**
+     * affiche les images du spectacle
+     * @return string
+     */
     public function renderImage(): string {
         $html = " <div class='spectacle-images'>";
         foreach($this->spectacle->images as $image) {

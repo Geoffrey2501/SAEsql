@@ -4,10 +4,16 @@ declare(strict_types=1);
 namespace iutnc\NRV\render;
 
 use iutnc\NRV\event\Soiree;
+use iutnc\NRV\repository\NRVRepository;
 
 class SoireeRenderer extends EventRenderer {
+    /**
+     * @var Soiree
+     */
     protected Soiree $soiree;
-
+    /**
+     * @var string
+     */
     private string $style;
 
     public function __construct(Soiree $soiree) {
@@ -64,9 +70,31 @@ class SoireeRenderer extends EventRenderer {
     font-size: 1.2em;
     color: #4caf50; /* Couleur pour mettre en valeur le tarif */
 }
+
+.spectacles-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+     flex-direction: row;  
+     flex-wrap: wrap;
+}
+
+.spectacle-item {
+    padding: 10px;
+    background-color: #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+    
+}
+@
 </style>";
     }
-
+    /**
+     * affiche la soirée de manière compacte
+     * @param int $selector
+     * @return string
+     */
     public function renderCompact(): string {
         return "<div style='text-align: center; padding: 10px 0;'>
                     <h2>Soiree: " . $this->soiree->nomSoiree . "</h2>
@@ -78,10 +106,14 @@ class SoireeRenderer extends EventRenderer {
                         </ul>
                 </div>";
     }
-
+    /**
+     * affiche la soirée de manière longue
+     * @return string
+     */
     public function renderLong() : string
     {
-        return "<div class='soiree-container'>
+        return $this->style . "
+            <div class='soiree-container'>
                 <div class='soiree-header'>
                     <h2>" . $this->soiree->nomSoiree . "</h2>
                 </div>
@@ -96,18 +128,24 @@ class SoireeRenderer extends EventRenderer {
                 <div class='soiree-tarif'>
                     <strong>Tarif: " . $this->soiree->tarif . "€/personne</strong>
                 </div>
-            </div>" . $this->renderSpectacles();
+            </div>
+            <div class='spectacles-container'>" .
+            $this->renderSpectacles() .
+            "</div>";
     }
 
+    /**
+     * affiche les spectacles de la soirée
+     * @return string
+     */
     public function renderSpectacles(): string {
         $spectacles = $this->soiree->spectacles;
-        $html = "<ul style='list-style-type: none; padding: 0;'>";
+        $html = "";
         foreach($spectacles as $spectacle) {
             $render = new SpectacleRenderer($spectacle);
-            $html .= "<li>" . $render->render(1) . "</li>";
+
+            $html .= "<div class='spectacle-item'>" . $render->render(1) . "</div>";
         }
-        $html .= "</ul>";
         return $html;
     }
 }
-

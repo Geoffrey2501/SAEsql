@@ -12,7 +12,6 @@ class FiltrageAction extends Action
      * @throws \Exception
      * Filtrer les spectacles en fonction du style, de la date et du lieu
      */
-
     public function execute(): string
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

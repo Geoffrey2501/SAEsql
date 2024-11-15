@@ -6,6 +6,11 @@ use iutnc\NRV\repository\NRVRepository;
 
 class AddSoireeAction extends Action{
 
+    /**
+     * retourne un questionner pour ajouter une soirée avec un GET
+     * et POST pour ajouter la soirée
+     * @return string
+     */
     public function execute(): string
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

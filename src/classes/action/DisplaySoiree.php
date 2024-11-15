@@ -8,6 +8,10 @@ use iutnc\NRV\repository\NRVRepository;
 class DisplaySoiree extends Action
 {
 
+    /**
+     * retourne le code html correspondant à l'affichage de la soiree
+     * @return string
+     */
     public function execute(): string
     {
         $html = "";

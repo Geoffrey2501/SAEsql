@@ -391,7 +391,7 @@ class NRVRepository
 
 
 
-    public static function getIdSpectacle(string $libelle, string $titre)
+    public static function getIdSpectacle(string $libelle, string $titre):int
     {
         $pdo = self::getInstance()->getPDO();
         $stmt = $pdo->prepare("SELECT idSpec FROM spectacle WHERE libelle = :libelle AND titrespec = :titre");
@@ -401,6 +401,14 @@ class NRVRepository
     }
 
 
+    public static function getIdSoiree(string $date, int $idspectacle):int
+    {
+        $pdo = self::getInstance()->getPDO();
+        $stmt = $pdo->prepare("SELECT soiree.idSoiree FROM soiree inner join soireespectacle WHERE date = :date AND idspec = :idspectacle");
+        $stmt->execute([':date' => $date , ':idspectacle' => $idspectacle]);
+        $id = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $id['idSoiree'];
+    }
 
 
 

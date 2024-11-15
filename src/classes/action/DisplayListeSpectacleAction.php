@@ -11,6 +11,7 @@ class DisplayListeSpectacleAction extends Action
 {
 
     /**
+     * retourne le code html correspondant à la requête
      * @return string
      * @throws \Exception
      */

@@ -39,7 +39,7 @@ class Dispatcher
     {
         NRVRepository::setConfig(__DIR__ . '/../../../../config/NRV.db.init');
         switch ($this->action) {
-            case 'spectacleINfo':
+            case 'display-spectacle-filtre':
                 $action = new DisplaySpectacle();
                 break;
             case 'soiree':

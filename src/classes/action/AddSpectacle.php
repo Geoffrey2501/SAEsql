@@ -9,7 +9,7 @@ class AddSpectacle extends Action
     /**
      * @return string
      * @throws \Exception
-     * Ajouter un spectacle avec un formulaire en fonction du type de requete Get ou post
+     * Ajouter un spectacle avec un formulaire en fonction du type de requete Get et utilise la methode post pour ajouter le spectacle
      *
      */
     public function execute(): string

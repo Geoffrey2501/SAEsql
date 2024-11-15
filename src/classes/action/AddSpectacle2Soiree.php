@@ -8,6 +8,11 @@ use iutnc\NRV\repository\NRVRepository;
 
 class AddSpectacle2Soiree extends Action
 {
+    /**
+     * si la request est de type post alors cela ajoute le spectacle à la soirée
+     * sinon cela retourne un formulaire pour ajouter un spectacle à une soirée
+     * @return string
+     */
 
     public function execute(): string
     {
