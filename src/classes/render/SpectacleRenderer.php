@@ -115,7 +115,7 @@ img {
     <a href='?action=soiree&id=".$i2."'>
         <div class='spectacle-card'>
             <div class='spectacles-image'>
-                <img src='./../images/{".$img."' class='spectacle-image2' alt='Image du spectacle'>
+                <img src='./../images/".$img."' class='spectacle-image2' alt='Image du spectacle'>
             </div>
             <h2 class='spectacle-titre'>".$this->spectacle->titre."</h2>
             <ul class='spectacle-details'>
@@ -143,7 +143,7 @@ img {
                         <li><strong>Artistes : </strong> <ul>" . $this->renderArtistes() . "</ul></li>
                         <li><strong>Aperçus : </strong> " . $this->renderImage() . "</li>";
         if($this->spectacle->extrait != null) {
-            if(str_contains($this->spectacle->extrait, ".mp4"))$html .= "<li><strong>Video:</strong> <video controls><source src='" . $this->spectacle->extrait . "' type='video/mp4'></video></li>";
+            if(str_contains($this->spectacle->extrait, ".mp4"))$html .= "<li><strong>Video:</strong> <video controls><source src='./../audio/" . $this->spectacle->extrait . "' type='video/mp4'></video></li>";
             else $html .= "<li><strong>Video:</strong> <audio controls><source src='" . $this->spectacle->extrait . "' type='audio/mp3'></audio></li>";
         }
         $html.=" </ul></div></a>";

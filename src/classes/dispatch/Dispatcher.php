@@ -246,7 +246,8 @@ class Dispatcher
         <h1>NRV Festival</h1>
         <p>Le plus grand festival de musique de l'année !</p>
         </header>
-
+        
+        
         <nav>
         <ul>
         $menu
