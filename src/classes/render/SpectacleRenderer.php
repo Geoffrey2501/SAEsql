@@ -135,6 +135,7 @@ img {
                         <li class='spectacle-horaire'><strong>Heure de début : </strong>" . $this->spectacle->horairePrevisionnel . "</li>
                         <li class='spectacle-description'><strong>Description : </strong>" . $this->spectacle->description . "</li>
                         <li><strong>Style : </strong> " . $this->spectacle->style . "</li>
+                        <li><strong>Artistes : </strong> <ul>" . $this->renderArtistes() . "</ul></li>
                         <li><strong>Aperçus : </strong> " . $this->renderImage() . "</li>";
         if($this->spectacle->extrait != null) {
             if(str_contains($this->spectacle->extrait, ".mp4"))$html .= "<li><strong>Video:</strong> <video controls><source src='" . $this->spectacle->extrait . "' type='video/mp4'></video></li>";
@@ -148,7 +149,7 @@ img {
      * @return string
      */
     public function renderArtistes(): string {
-
+        $html = "<ul>";
         $artistes = $this->spectacle->artistes;
         if (empty($artistes)) {
             return '';

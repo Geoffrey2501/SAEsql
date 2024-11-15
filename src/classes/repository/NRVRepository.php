@@ -88,16 +88,18 @@ class NRVRepository
     }
 
     /**
-     * @param string $libelle
-     * @param string $titre
-     * @param string $video
-     * @param int $style
+     * ajoute un spectacle dans la base de donnée
+     * @param String $title
+     * @param String $libelle
+     * @param String $video
+     * @param String $style
      */
-    public function addSpectacle(string $libelle, string $titre, string $video, int $style)
+    public function addSpectacle(String $title, String $libelle, String $video, String $style)
     {
         $stmt = $this->pdo->prepare("INSERT INTO spectacle ( libelle, titrespec, video, idstyle) VALUES ( :libelle, :titre, :video, :style)");
-        $stmt->execute([ ':libelle' => $libelle, ':titre' => $titre, ':video' => $video, ':style' => $style]);
+        $stmt->execute([':libelle' => $libelle, ':titre' => $title, ':video' => $video, ':style' => $style]);
     }
+
 
     /**
      * @return array
@@ -332,7 +334,7 @@ class NRVRepository
         while ($row2 = $stmt2->fetch(\PDO::FETCH_ASSOC)) {
             $images[] = $row2['nom_image'];
         }
-        return new Spectacle($row['titrespec'], $row['libelle'], $row['video'], $row["horaire"], $images, [], $row['date'], $row['nomstyle']);
+        return new Spectacle($row['titrespec'], $row['libelle'], $row['video'], $row["horaire"], $images, $this->getArtiste((int)$idSpectacle), $row['date'], $row['nomstyle']);
     }
 
     /**
@@ -353,7 +355,7 @@ class NRVRepository
         $stmt2->execute(['id' => $idSoiree]);
         $spectacles = [];
         while ($row2 = $stmt2->fetch(\PDO::FETCH_ASSOC)) {
-            $spectacles[] = self::getSpectacleById($row2['IdSpec']);
+            $spectacles[] = $this->getSpectacleById((int)$row2['IdSpec']);
         }
         return new Soiree($row['TitreSoiree'], $row['NomTheme'], $row['Date'], $row['NomLieu'], $spectacles, $row['heuresoiree'], $row['Descriptif'], $row['tarif']);
 
@@ -460,6 +462,48 @@ class NRVRepository
         return $id['idSoiree'];
     }
 
+    /**
+     * retourne les artistes d'un spectacle
+     * @param int $idSpec
+     * @return array
+     */
+    public function getArtiste(int $idSpec):array
+    {
+        $stmt = $this->pdo->prepare("SELECT idartiste, pseudo FROM artiste inner join spectacleartiste on artiste.idartiste=spectacleartiste.idartiste where idspec = :id");
+        $stmt->execute([':id' => $idSpec]);
+        $artistes = [];
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $artistes[$row["idartiste"]] = $row['pseudo'];
+            echo $row['pseudo'];
+        }
+
+        return $artistes;
+    }
+
+    /**
+     * retourne les artistes
+     * @return array
+     */
+    public function getArtistes(){
+        $stmt = $this->pdo->prepare("SELECT idartiste, pseudo FROM artiste");
+        $stmt->execute();
+        $artistes = [];
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $artistes[$row['idartiste']] = $row['pseudo'];
+        }
+        return $artistes;
+    }
 
 
+    /**
+     * ajoute un artiste à un spectacle
+     * @param int $idSpectacle
+     * @param int $idArtiste
+     * @return void
+     */
+    public  function addArtisteSpectacle(int $idSpectacle, int $idArtiste): void
+    {
+        $stmt = $this->pdo->prepare("INSERT INTO spectacleartiste ( idspec, idartiste) VALUES ( :idspec, :idartiste)");
+        $stmt->execute([':idspec' => $idSpectacle, ':idartiste' => $idArtiste]);
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace iutnc\NRV\action;
 
+use iutnc\NRV\event\Spectacle;
 use iutnc\NRV\repository\NRVRepository;
 
 class AddSpectacle extends Action
@@ -25,15 +26,13 @@ class AddSpectacle extends Action
                 $libelle = filter_var($_POST['libelle'], FILTER_SANITIZE_SPECIAL_CHARS);
                 $titre = filter_var($_POST['titre'], FILTER_SANITIZE_SPECIAL_CHARS);
                 $style = filter_var($_POST['style'], FILTER_SANITIZE_NUMBER_INT);
-
-               $repo->addSpectacle($libelle, $titre, $uploadFile, $style);
-
+                $idartiste = filter_var($_POST['artiste'], FILTER_SANITIZE_NUMBER_INT);
+                $repo->addSpectacle($libelle, $titre, $nameFile, $style);
+                $idspectacle = $repo->getIdSpectacle($libelle, $titre);
+                $repo->addArtisteSpectacle($idspectacle,$idartiste);
 
                 $html = "<h1>Le spectacle a bien été ajouté</h1>";
-            }
-
-            else
-            {
+            } else {
                 $html = "<h1>Erreur lors de l'upload de la video</h1>";
             }
 
@@ -49,16 +48,14 @@ class AddSpectacle extends Action
                     echo $uploadFileImage;
                     $id = $repo->getIdSpectacle($libelle, $titre);
                     $repo->addImageSpectacle($id, $uploadFileImage);
-                }
-                else
-                {
+                } else {
                     $html = "<h1>Erreur lors de l'upload de l'image</h1>";
                 }
             }
 
-        }else {
+        } else {
             $choix = $repo->getStyles();
-            $html= "<form method='post' enctype='multipart/form-data'>
+            $html = "<form method='post' enctype='multipart/form-data'>
                     <label for='libelle'>Libelle:</label>
                     <input type='text' id='libelle' name='libelle' required><br>
                     <label for='titre'>Titre:</label>
@@ -69,18 +66,26 @@ class AddSpectacle extends Action
                     
                     <label for='image'>Image</label>
                     <input type='file' id='image' name='image[]' accept='image/*' multiple>
-                        
-                  
-                    <label for='style'>Style:</label>
+                       ";
+            $choix = $repo->getArtistes();
+            $html .= "   <label for='artiste'>Artiste:</label>
+                    <select id='artiste' name='artiste' required>
+                    <option value=0>--Sélectionnez un artiste--</option>";
+            foreach ($choix as $id => $speudo) {
+                $html .= "<option value=$id>$speudo</option>";
+            }
+            $html .= "</select>";
+
+            $html .= "   <label for='style'>Style:</label>
                     <select id='style' name='style' required>
                     <option value=0>--Sélectionnez un style de musique--</option>";
-
+            $choix = $repo->getStyles();
 
             foreach ($choix as $id => $nom) {
-                $html.= "<option value=$id>$nom</option>";
+                $html .= "<option value=$id>$nom</option>";
             }
 
-            $html.= "</select> <br> <br> <button type='submit'>Ajouter</button></form>";
+            $html .= "</select> <br> <br> <button type='submit'>Ajouter</button></form>";
         }
         return $html;
 
