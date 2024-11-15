@@ -14,6 +14,7 @@ class FiltrageAction extends Action
      */
     public function execute(): string
     {
+        $repo = NRVRepository::getInstance();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $html = "";
             $style = filter_var($_POST['style'], FILTER_SANITIZE_NUMBER_INT);
@@ -21,15 +22,15 @@ class FiltrageAction extends Action
             $lieu = filter_var($_POST['lieu'], FILTER_SANITIZE_NUMBER_INT);
 
             if ($date != 0) {
-                $res = NRVRepository::filtreDate($date);
+                $res = $repo->filtreDate($date);
             }
 
             if ($lieu - 1 != -1) {
 
                 if (!isset($res) or $res === []) {
-                    $res = NRVRepository::filtreLieux($lieu);
+                    $res = $repo->filtreLieux($lieu);
                 } else {
-                    $r = NRVRepository::filtreLieux($lieu);
+                    $r = $repo->filtreLieux($lieu);
                     foreach ($res as $key => $spectacle) {
                         {
                             if (!in_array($spectacle, $r)) {
@@ -41,9 +42,9 @@ class FiltrageAction extends Action
             }
             if ($style != 0) {
                 if (!isset($res) or $res === []) {
-                    $res = NRVRepository::filtreStyle($style);
+                    $res = $repo->filtreStyle($style);
                 } else {
-                    $r = NRVRepository::filtreStyle($style);
+                    $r = $repo->filtreStyle($style);
                     foreach ($res as $key => $spectacle) {
                         {
                             if (!in_array($spectacle, $r)) {
@@ -73,7 +74,7 @@ class FiltrageAction extends Action
             <label for='style'>Style:</label>
             ";
 
-            $choix = NRVRepository::getStyles();
+            $choix = $repo->getStyles();
             $html .= "<select id='style' name='style' required>
             <option value=0>--Sélectionnez un style de musique--</option>";
             foreach ($choix as $id => $nom) {
@@ -81,7 +82,7 @@ class FiltrageAction extends Action
             }
             $html .= "</select> ";
 
-            $choix = NRVRepository::getDates();
+            $choix =$repo->getDates();
             $html .= "<label for='date'>Date:</label>
             <select id='date' name='date' required>
             <option value=0>--Sélectionnez une date--</option>";
@@ -90,7 +91,7 @@ class FiltrageAction extends Action
             }
             $html .= "</select>";
 
-            $choix = NRVRepository::getLieux();
+            $choix = $repo->getLieux();
             $html .= "<label for='lieu'>Lieu:</label>
             <select id='lieu' name='lieu' required>
             <option value=0>--Sélectionnez un lieu--</option>";

@@ -104,10 +104,14 @@ img {
      * @return string
      */
     public function renderCompact(): string {
+        $img = "";
+        if (isset($this->spectacle->images[0])) {
+            $img = $this->spectacle->images[0];
+        }
         return $this->style."
         <div class='spectacle-card'>
             <div class='spectacles-image'>
-                <img src='./../images/{".$this->spectacle->images[0]."' class='spectacle-image2' alt='Image du spectacle'>
+                <img src='./../images/{".$img."' class='spectacle-image2' alt='Image du spectacle'>
             </div>
             <h2 class='spectacle-titre'>".$this->spectacle->titre."</h2>
             <ul class='spectacle-details'>
@@ -123,9 +127,10 @@ img {
      * @return string
      */
     public function renderLong(): string {
-        $i = NRVRepository::getIdSpectacle($this->spectacle->description, $this->spectacle->titre);
+        $repo = NRVRepository::getInstance();
+        $i = $repo->getIdSpectacle($this->spectacle->description, $this->spectacle->titre);
 
-        $html= $this->style."<a href='?action=display-spectacle-filtre&idspec=".$i."&idsoiree=".NRVRepository::getIdSoiree($this->spectacle->date, $i)."'><div class='spectacle-cardL'><h2 class='spectacle-titre'>" . $this->spectacle->titre . "</h2>
+        $html= $this->style."<a href='?action=display-spectacle-filtre&idspec=".$i."&idsoiree=".$repo->getIdSoiree($this->spectacle->date, $i)."'><div class='spectacle-cardL'><h2 class='spectacle-titre'>" . $this->spectacle->titre . "</h2>
                         <ul class='spectacle-details'>
                         <li class='spectacle-horaire'><strong>Heure de début : </strong>" . $this->spectacle->horairePrevisionnel . "</li>
                         <li class='spectacle-description'><strong>Description : </strong>" . $this->spectacle->description . "</li>

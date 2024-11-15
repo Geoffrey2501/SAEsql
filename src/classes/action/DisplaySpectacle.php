@@ -17,13 +17,14 @@ class DisplaySpectacle extends Action
     {
         $html = "";
         if($_SERVER['REQUEST_METHOD'] === 'GET') {
+            $repo = NRVRepository::getInstance();
             $idspec = filter_var($_GET['idspec'], FILTER_SANITIZE_NUMBER_INT);
             $idsoiree = filter_var($_GET['idsoiree'], FILTER_SANITIZE_NUMBER_INT);
-            $spectacle = NRVRepository::getSpectacleById($idspec);
+            $spectacle = $repo->getSpectacleById($idspec);
             $renderer = new SpectacleRenderer($spectacle);
             $html .= $renderer->render(1);
             
-            $spectaclesDate = NRVRepository::filtreDate($spectacle->date);
+            $spectaclesDate = $repo->filtreDate($spectacle->date);
             $html .= "<div style='margin: 10px'>";
             $html .= "<h2>Autres spectacles le même jour</h2>";
             foreach ($spectaclesDate as $spectacle) {
@@ -31,16 +32,18 @@ class DisplaySpectacle extends Action
                 $html .= $renderer->render(0);
             }
             $html .= "</div><div>";
-            $idLieux = NRVRepository::getLieu($idsoiree);
-            $spectaclesLieu = NRVRepository::filtreLieux($idLieux);
+            $idLieux = $repo->getLieu($idsoiree);
+            $spectaclesLieu = $repo->filtreLieux($idLieux);
             $html .= "<h2>Autres spectacles au même lieu</h2>";
             foreach ($spectaclesLieu as $spectacle) {
                 $renderer = new SpectacleRenderer($spectacle);
+                $html.="<a href='?action=display-spectacle-filtre&idspec=".$repo->getIdSpectacle($spectacle->description, $spectacle->titre)."&idsoiree=".$idsoiree."'>".$renderer->render(0);
                 $html .= $renderer->render(0);
+                $html.="</a>";
             }
 
-            $idStyle = NRVRepository::getStyle($spectacle->style);
-            $spectaclesStyle = NRVRepository::filtreStyle($idStyle);
+            $idStyle = $repo->getStyle($spectacle->style);
+            $spectaclesStyle = $repo->filtreStyle($idStyle);
             $html .= "</div><div>";
             $html .= "<h2>Autres spectacles du même style</h2>";
             foreach ($spectaclesStyle as $spectacle) {

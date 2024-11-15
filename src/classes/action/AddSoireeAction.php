@@ -20,7 +20,8 @@ class AddSoireeAction extends Action{
             $lieuSoiree = filter_var($_POST['lieu'], FILTER_SANITIZE_SPECIAL_CHARS);
             $heureSoiree = filter_var($_POST['heureSoiree'], FILTER_SANITIZE_SPECIAL_CHARS);
             $desciption = filter_var($_POST['description'], FILTER_SANITIZE_SPECIAL_CHARS);
-            $soiree = new Soiree($nomSoiree, $themeSoiree, $dateSoiree, $lieuSoiree, [], $heureSoiree, $desciption);
+            $tarif = filter_var($_POST['tarif'], FILTER_SANITIZE_SPECIAL_CHARS);
+            $soiree = new Soiree($nomSoiree, $themeSoiree, $dateSoiree, $lieuSoiree, [], $heureSoiree, $desciption, $tarif);
             $repo = NRVRepository::getInstance();
             if($repo->addSoiree($soiree)) $html = "Soirée ajoutée";
             else $html = "ce lieux est deja pris pour cette date";
@@ -47,6 +48,8 @@ class AddSoireeAction extends Action{
             <input type='time' id='heureSoiree' name='heureSoiree' required>
             <label for='description'>Description de la soirée:</label>
             <input type='text' id='description' name='description' required>
+            <label for='tarif'>Tarif de la soirée:</label>
+            <input type='number' id='tarif' name='tarif' required>
            ";
 
             $choix = $repo->getLieux();

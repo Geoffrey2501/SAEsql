@@ -14,6 +14,7 @@ class AddSpectacle extends Action
      */
     public function execute(): string
     {
+        $repo = NRVRepository::getInstance();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $nameFile = filter_var($_FILES['video']['name'], FILTER_SANITIZE_SPECIAL_CHARS);
@@ -25,7 +26,7 @@ class AddSpectacle extends Action
                 $titre = filter_var($_POST['titre'], FILTER_SANITIZE_SPECIAL_CHARS);
                 $style = filter_var($_POST['style'], FILTER_SANITIZE_NUMBER_INT);
 
-                NRVRepository::addSpectacle($libelle, $titre, $uploadFile, $style);
+               $repo->addSpectacle($libelle, $titre, $uploadFile, $style);
 
 
                 $html = "<h1>Le spectacle a bien été ajouté</h1>";
@@ -46,8 +47,8 @@ class AddSpectacle extends Action
 
                 if (move_uploaded_file($_FILES['image']['tmp_name'][$index], $uploadFileImage)) {
                     echo $uploadFileImage;
-                    $id = NRVRepository::getIdSpectacle($libelle, $titre);
-                    NRVRepository::addImageSpectacle($id, $uploadFileImage);
+                    $id = $repo->getIdSpectacle($libelle, $titre);
+                    $repo->addImageSpectacle($id, $uploadFileImage);
                 }
                 else
                 {
@@ -56,7 +57,7 @@ class AddSpectacle extends Action
             }
 
         }else {
-            $choix = NRVRepository::getStyles();
+            $choix = $repo->getStyles();
             $html= "<form method='post' enctype='multipart/form-data'>
                     <label for='libelle'>Libelle:</label>
                     <input type='text' id='libelle' name='libelle' required><br>

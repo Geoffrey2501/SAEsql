@@ -8,6 +8,8 @@ namespace iutnc\NRV\event;
 
 
 
+use InvalidArgumentException;
+
 /**
  * Class Spectacle
  */

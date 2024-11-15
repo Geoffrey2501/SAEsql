@@ -26,10 +26,12 @@ class Dispatcher
 
     /**
      * Dispatcher constructor.
+     * @throws \Exception
      */
     public function __construct()
     {
         $this->action = $_GET['action'] ?? 'default';
+        NRVRepository::setConfig(__DIR__ . '/../../../../config/NRV.db.init');
     }
 
     /**
@@ -38,7 +40,6 @@ class Dispatcher
      */
     public function run(): void
     {
-        NRVRepository::setConfig(__DIR__ . '/../../../../config/NRV.db.init');
         switch ($this->action) {
             case 'display-spectacle-filtre':
                 $action = new DisplaySpectacle();
