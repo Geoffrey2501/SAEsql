@@ -61,7 +61,7 @@ class AuthnProvider
         if (!isset($_SESSION['user'])) {
             throw new AuthzException("No user is signed in");
         }
-        return $_SESSION['user']['id'];
+        return $_SESSION['user'];
     }
 
 

@@ -11,7 +11,6 @@ class Authz
     public static function checkRole(string $expectedRole): bool
     {
         $user = AuthnProvider::getSignedInUser();
-
         if ($user['role'] != $expectedRole) {
             throw new AuthzException("User does not have the required role");
         }

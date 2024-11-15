@@ -4,6 +4,7 @@ namespace iutnc\NRV\action;
 
 use iutnc\NRV\action\Action;
 use iutnc\NRV\auth\AuthnProvider;
+use iutnc\NRV\auth\Authz;
 use iutnc\NRV\exception\AuthnException;
 use \iutnc\NRV\repository\NRVRepository;
 
@@ -16,7 +17,8 @@ class AddUserAction extends Action
     public function execute(): string
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if(filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
+
+            if(filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) and Authz::checkRole("100")){
                 $email = $_POST['email'];
                 $password= filter_var($_POST['mdp'], FILTER_SANITIZE_SPECIAL_CHARS);
                 echo $password;
@@ -36,6 +38,7 @@ class AddUserAction extends Action
                             <br>
                             <p>$res</p>";
             }
+
         } else {
             $html= "<form method='post'>
                 <label for='email'>Email</label>

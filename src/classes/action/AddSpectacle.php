@@ -2,6 +2,7 @@
 
 namespace iutnc\NRV\action;
 
+use iutnc\NRV\auth\Authz;
 use iutnc\NRV\event\Spectacle;
 use iutnc\NRV\repository\NRVRepository;
 
@@ -16,6 +17,9 @@ class AddSpectacle extends Action
     public function execute(): string
     {
         $repo = NRVRepository::getInstance();
+        $html = "";
+        if(Authz::checkRole("1")or Authz::checkRole("100")) {
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $nameFile = filter_var($_FILES['video']['name'], FILTER_SANITIZE_SPECIAL_CHARS);
@@ -85,7 +89,7 @@ class AddSpectacle extends Action
             }
 
             $html .= "</select> <br> <br> <button type='submit'>Ajouter</button></form>";
-        }
+        }}
         return $html;
 
     }
