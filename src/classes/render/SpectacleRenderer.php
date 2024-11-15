@@ -108,7 +108,11 @@ img {
         if (isset($this->spectacle->images[0])) {
             $img = $this->spectacle->images[0];
         }
+        $repo = NRVRepository::getInstance();
+        $i = $repo->getIdSpectacle($this->spectacle->description, $this->spectacle->titre);
+        $i2 = $repo->getIdSoiree($this->spectacle->date, $i);
         return $this->style."
+    <a href='?action=soiree&id=".$i2."'>
         <div class='spectacle-card'>
             <div class='spectacles-image'>
                 <img src='./../images/{".$img."' class='spectacle-image2' alt='Image du spectacle'>
@@ -120,6 +124,7 @@ img {
                 <li class='spectacle-description'><strong>Description : </strong>".$this->spectacle->description."</li>
             </ul>
         </div>
+    </a>
         ";
     }
     /**

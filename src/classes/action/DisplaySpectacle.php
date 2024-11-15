@@ -27,17 +27,16 @@ class DisplaySpectacle extends Action
             $spectaclesDate = $repo->filtreDate($spectacle->date);
             $html .= "<div style='margin: 10px'>";
             $html .= "<h2>Autres spectacles le même jour</h2>";
-            foreach ($spectaclesDate as $spectacle) {
-                $renderer = new SpectacleRenderer($spectacle);
+            foreach ($spectaclesDate as $spectacle1) {
+                $renderer = new SpectacleRenderer($spectacle1);
                 $html .= $renderer->render(0);
             }
             $html .= "</div><div>";
             $idLieux = $repo->getLieu($idsoiree);
             $spectaclesLieu = $repo->filtreLieux($idLieux);
             $html .= "<h2>Autres spectacles au même lieu</h2>";
-            foreach ($spectaclesLieu as $spectacle) {
-                $renderer = new SpectacleRenderer($spectacle);
-                $html.="<a href='?action=display-spectacle-filtre&idspec=".$repo->getIdSpectacle($spectacle->description, $spectacle->titre)."&idsoiree=".$idsoiree."'>".$renderer->render(0);
+            foreach ($spectaclesLieu as $spectacle2) {
+                $renderer = new SpectacleRenderer($spectacle2);
                 $html .= $renderer->render(0);
                 $html.="</a>";
             }
