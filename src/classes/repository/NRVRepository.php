@@ -469,12 +469,11 @@ class NRVRepository
      */
     public function getArtiste(int $idSpec):array
     {
-        $stmt = $this->pdo->prepare("SELECT idartiste, pseudo FROM artiste inner join spectacleartiste on artiste.idartiste=spectacleartiste.idartiste where idspec = :id");
+        $stmt = $this->pdo->prepare("SELECT artiste.idartiste, pseudo FROM artiste inner join spectacleartiste on artiste.idartiste=spectacleartiste.idartiste where idspec = :id");
         $stmt->execute([':id' => $idSpec]);
         $artistes = [];
         while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
             $artistes[$row["idartiste"]] = $row['pseudo'];
-            echo $row['pseudo'];
         }
 
         return $artistes;

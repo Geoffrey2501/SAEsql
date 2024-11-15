@@ -54,7 +54,6 @@ class AddSpectacle extends Action
             }
 
         } else {
-            $choix = $repo->getStyles();
             $html = "<form method='post' enctype='multipart/form-data'>
                     <label for='libelle'>Libelle:</label>
                     <input type='text' id='libelle' name='libelle' required><br>
