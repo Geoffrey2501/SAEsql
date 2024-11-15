@@ -212,8 +212,10 @@ class NRVRepository
     }
 
 
-
-
+    /**
+     * retourne les dates des soirées
+     * @return array
+     */
     public static function getDates()
     {
         $pdo = self::getInstance()->getPDO();
@@ -226,6 +228,10 @@ class NRVRepository
         return $dates;
     }
 
+    /**
+     * retourne les lieux des soirées
+     * @return array
+     */
     public static function getLieux()
     {
         $pdo = self::getInstance()->getPDO();
@@ -237,7 +243,10 @@ class NRVRepository
         }
         return $lieux;
     }
-
+    /**
+     * retourne les themes des soirées
+     * @return array
+     */
     public function getThemes(){
         $pdo = self::getInstance()->getPDO();
         $stmt = $pdo->prepare("SELECT idtheme, nomtheme FROM theme");
@@ -249,6 +258,11 @@ class NRVRepository
         return $themes;
     }
 
+    /**
+     * retourne les styles des spectacles
+     * @param String $style
+     * @return int
+     */
     public static function getStyle(String $style): int{
         $pdo = self::getInstance()->getPDO();
         $stmt = $pdo->prepare("SELECT idstyle FROM style where nomstyle = :style");
@@ -256,6 +270,11 @@ class NRVRepository
         return $stmt->fetch(\PDO::FETCH_ASSOC)['idstyle'];
     }
 
+    /**
+     * retourn l'id du lieu de la soirée
+     * @param int $idsoiree
+     * @return int
+     */
     public static function getLieu(int $idsoiree): int{
         $pdo = self::getInstance()->getPDO();
         $stmt = $pdo->prepare("SELECT idlieu FROM soiree where idsoiree = :id");
@@ -275,7 +294,12 @@ class NRVRepository
         return $this->pdo;
     }
 
-
+    /**
+     * ajoute une soirée dans la base de données
+     * si l'ajout est effectué retourne true sinon false
+     * @param Soiree $soiree
+     * @return bool
+     */
     public function addSoiree(Soiree $soiree):bool
     {
        $stmt = $this->pdo->prepare("INSERT INTO soiree (titresoiree, idtheme, date, idlieu, heuresoiree, description) VALUES (:nom, :theme, :date, :lieu, :heure, :description)");
@@ -289,9 +313,12 @@ class NRVRepository
     }
 
 
-
-
-    public static function getSpectacleById(int $idSpectacle) {
+    /**
+     * retourne le spectacle en fonction de son id
+     * @param int $idSpectacle
+     * @return Spectacle
+     */
+    public static function getSpectacleById(int $idSpectacle): Spectacle{
         $pdo = self::getInstance()->getPDO();
         //requete sql pour recuperer les spectacles et leur horaire
         $stmt = $pdo->prepare("SELECT Spectacle.IdSpec, libelle, titrespec, video,horaire, nomstyle, date FROM spectacle
@@ -313,6 +340,11 @@ class NRVRepository
         return new Spectacle($row['titrespec'], $row['libelle'], $row['video'], $row["horaire"], $images, [], $row['date'], $row['nomstyle']);
     }
 
+    /**
+     * retourne la soirée en fonction de son id
+     * @param int $idSoiree
+     * @return Soiree
+     */
     public static function getSoiree(int $idSoiree) {
         $pdo = self::getInstance()->getPDO();
 
@@ -333,6 +365,10 @@ class NRVRepository
 
     }
 
+    /**
+     * retourne toutes les soirées
+     * @return array
+     */
     public function getSoirees():array
     {
         $pdo = self::getInstance()->getPDO();
@@ -345,6 +381,13 @@ class NRVRepository
         return $soirees;
     }
 
+    /**
+     * ajoute un spectacle à une soirée
+     * @param int $idSoiree
+     * @param int $idSpectacle
+     * @param string $horaire
+     * @return bool
+     */
     public function addSoireeSpectacle(int $idSoiree, int $idSpectacle, string $horaire):bool {
         $pdo = self::getInstance()->getPDO();
         // Check if the spectacle is already scheduled for the same evening
@@ -366,6 +409,11 @@ class NRVRepository
         return $res;
     }
 
+    /**
+     * retourne les spectacles
+     * @param int $idSoiree
+     * @return array
+     */
     public function getAllTitresSpectacles(){
         $pdo = self::getInstance()->getPDO();
         $stmt = $pdo->prepare("SELECT idspec,titrespec FROM spectacle");
@@ -377,7 +425,12 @@ class NRVRepository
         return $spectacles;
     }
 
-
+    /**
+     * rajpute une image à un spectacle
+     * @param int $idSpectacle
+     * @param string $nomImage
+     * @return void
+     */
     public static function addImageSpectacle(int $idSpectacle, string $nomImage): void
     {
 
@@ -390,7 +443,12 @@ class NRVRepository
     }
 
 
-
+    /**
+     * retourne l'id du spectacle
+     * @param string $libelle
+     * @param string $titre
+     * @return int
+     */
     public static function getIdSpectacle(string $libelle, string $titre):int
     {
         $pdo = self::getInstance()->getPDO();
@@ -400,7 +458,12 @@ class NRVRepository
         return $id['idSpec'];
     }
 
-
+    /**
+     * retourne l'id de la soirée
+     * @param string $date
+     * @param int $idspectacle
+     * @return int
+     */
     public static function getIdSoiree(string $date, int $idspectacle):int
     {
         $pdo = self::getInstance()->getPDO();
